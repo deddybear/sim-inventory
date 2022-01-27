@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('title', 'Dashboard SIM - Inventory')
+@section('title-header', 'Dashboard')
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">

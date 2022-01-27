@@ -1,6 +1,11 @@
 <?php
 
+use App\Http\Controllers\GudangController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\LaporanController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,10 +18,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', function (){
+    return redirect('/dashboard');
+});
+
+Route::get('/password', function (){
+    return redirect('/dashboard');
+});
+
+Route::middleware(['auth'])->group(function () {
+
+    Route::prefix('dashboard')->group(function () {
+        Route::get('/', [HomeController::class, 'index'])->name('home');
+        Route::get('/gudang', [GudangController::class, 'index']);
+        Route::get('/laporan', [LaporanController::class, 'index']);
+
+        Route::middleware(['divisi'])->group(function () {
+            Route::get('/karyawan', [KaryawanController::class, 'index']);
+        });
+
+    });
+
+    
+});
