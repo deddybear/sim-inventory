@@ -10,9 +10,6 @@
 
     <title>@yield('title')</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -71,19 +68,17 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a href="/dashboard/history" class="nav-link">
+                                    <i class="nav-icon fas fa-history"></i>
+                                    <p>History</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="/dashboard/laporan" class="nav-link">
                                     <i class="nav-icon far fa-file-alt"></i>
                                     <p>Download Laporan</p>
                                 </a>
-                            </li>                            
-                            @if (Auth::user()->roles == 1)
-                            <li class="nav-item">
-                                <a href="/dashboard/karyawan" class="nav-link">
-                                    <i class="nav-icon fas fa-chalkboard-teacher"></i>
-                                    <p> Data Pegawai</p>
-                                </a>
-                            </li>
-                            @endif
+                            </li>                         
                             <li class="nav-item has-treeview">
                                 <a href="#" class="nav-link">
                                     <i class="nav-icon fas fa-user-cog"></i>
@@ -93,6 +88,14 @@
                                     </p>
                                 </a>
                                 <ul class="nav nav-treeview">
+                                    @if (Auth::user()->roles == 1)
+                                    <li class="nav-item">
+                                        <a href="/dashboard/karyawan" class="nav-link">
+                                            <i class="nav-icon fas fa-chalkboard-teacher"></i>
+                                            <p> Data Pegawai</p>
+                                        </a>
+                                    </li>
+                                    @endif
                                     <li class="nav-item">
                                         <a href="/" class="nav-link">
                                             <i class="fas fa-user-edit nav-icon"></i>
@@ -168,5 +171,6 @@
 <script src="{{ asset('/plugins/fontawesome/all.js') }}"></script>
 <script src="{{ asset('/plugins/sweetalert2/sweetalert2.all.js') }}"></script>
 <script src="{{ asset('/plugins/moment-with-locales.js') }}"></script>
+<script src="https://momentjs.com/downloads/moment-timezone-with-data-1970-2030.min.js"></script>
 @yield('script')
 </html>

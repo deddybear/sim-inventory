@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GudangController;
+use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\LaporanController;
@@ -36,6 +37,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [HomeController::class, 'index'])->name('home');
         Route::get('/gudang', [GudangController::class, 'index']);
         Route::get('/laporan', [LaporanController::class, 'index']);
+        Route::get('/history', [HistoryController::class, 'index']);
 
         Route::middleware(['divisi'])->group(function () {
             Route::get('/karyawan', [KaryawanController::class, 'index']);
@@ -43,5 +45,19 @@ Route::middleware(['auth'])->group(function () {
 
     });
 
-    
+    //fungsional 
+    Route::prefix('gudang')->group(function () {
+        Route::get('/data', [GudangController::class, 'data']);
+        Route::get('/search', [GudangController::class, 'search']);
+        Route::post('/create', [GudangController::class, 'create']);
+        Route::get('/add/{stock}/{id}', [GudangController::class, 'addingStock']);
+        Route::get('/reduce/{stock}/{id}', [GudangController::class, 'reduceStock']);
+        Route::delete('/delete/{id}', [GudangController::class, 'destroy']);
+    });
+
+    Route::prefix('history')->group(function () {
+        Route::get('/data', [HistoryController::class, 'data']);
+        Route::get('/search', [HistoryController::class, 'data']);
+        Route::delete('/delete/{id}', [HistoryController::class, 'destroy']);
+    });
 });

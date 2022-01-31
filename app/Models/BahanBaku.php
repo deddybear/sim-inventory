@@ -14,4 +14,6 @@ class BahanBaku extends Model
     protected $table = 'bahan_baku';
     protected $guarded = [];
 
+    const CREATED_AT = 'date_entry';
+    const UPDATED_AT = 'date_out';
 }
