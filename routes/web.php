@@ -57,7 +57,14 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('history')->group(function () {
         Route::get('/data', [HistoryController::class, 'data']);
-        Route::get('/search', [HistoryController::class, 'data']);
+        Route::get('/search', [HistoryController::class, 'search']);
         Route::delete('/delete/{id}', [HistoryController::class, 'destroy']);
     });
+
+    Route::prefix('laporan')->group(function () {
+        Route::get('/', [LaporanController::class, 'laporanDivisi']);
+    });
+
+
+    
 });

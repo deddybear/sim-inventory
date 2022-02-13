@@ -32,6 +32,7 @@ $(document).ready(function () {
         'rgba(153, 102, 255, 0.2)',
         'rgba(201, 203, 207, 0.2)'
     ]
+    
     const borderColor = () => [
         'rgb(255, 99, 132)',
         'rgb(255, 159, 64)',
@@ -41,6 +42,7 @@ $(document).ready(function () {
         'rgb(153, 102, 255)',
         'rgb(201, 203, 207)'
     ]
+
     function option(title) {
         return {
             options: {

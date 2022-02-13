@@ -15,11 +15,13 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
+
+    <link rel="stylesheet" href="{{ asset('/plugins/bootstrap/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('/plugins/fontawesome/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/plugins/stisla/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('/plugins/stisla/components.css') }}">
     <link rel="stylesheet" href="{{ asset('/plugins/jquery-ui/jquery-ui.css') }}">
     <link rel="stylesheet" href="{{ asset('/plugins/ionicons/css/ionicons.css') }}">
-    <link rel="stylesheet" href="{{ asset('/plugins/bootstrap/bootstrap.css') }}">
-    <link rel="stylesheet" href="{{ asset('/plugins/adminlte/adminlte.css') }}">
-    <link rel="stylesheet" href="{{ asset('/plugins/fontawesome/all.css') }}">
     <link rel="stylesheet" href="{{ asset('/plugins/sweetalert2/sweetalert2.css') }}">
     <link rel="stylesheet" href="{{ asset('/plugins/loader.min.css') }}">
 
@@ -27,150 +29,230 @@
     @yield('css')
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body>
     {{-- <div id="loader-wrapper">
 	    <div id="loader"></div>
         <div class="loader-section section-left"></div>
         <div class="loader-section section-right"></div>
     </div>  --}}
-    <div id="wrapper">
-        @auth
-            <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item d-none d-sm-inline-block">
-                        <p class="nav-link m-0" > Selamat datang, {{ Auth::user()->name }} </p>
-                    </li>
-                </ul>
-            </nav>
-            <aside class="main-sidebar sidebar-dark-primary elevation-4">
-                <a href="/" class="brand-link">
-                    <span class="brand-text font-weight-light primary">SIM - Inventory </span>
-                </a>
-                <div class="sidebar">
-                    <nav class="mt-2">
-                        <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">                           
-                            
-                            <li class="nav-item">
-                                <a href="/dashboard" class="nav-link">
-                                    <i class="nav-icon fas fa-tachometer-alt"></i>
-                                    <p>Dashboard</p>
+    <div id="app">
+        <div class="main-wrapper main-wrapper-1">
+            <div class="navbar-bg"></div>
+                @auth            
+                <nav class="navbar navbar-expand-lg main-navbar">
+                    <form class="form-inline mr-auto">
+                        <ul class="navbar-nav mr-3">
+                            <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
+                        </ul>
+                    </form>                    
+                    <ul class="navbar-nav navbar-right">
+                        <li class="dropdown"><a data-toggle="dropdown" class="nav-link  nav-link-lg nav-link-user">
+                            <img alt="image" src="{{ asset('avatar-1.png') }}" class="rounded-circle mr-1">
+                            <div class="d-sm-none d-lg-inline-block">Hi, {{ Auth::user()->name }}</div></a>
+                          </li>
+                    </ul>
+                </nav>
+                <div class="main-sidebar sidebar-style-2">
+                    <aside class="sidebar-wrapper">
+                        <div class="sidebar-brand">
+                            <a href="/">
+                                <span class="brand-text font-weight-light">SIM - Inventory </span>
+                            </a>
+                        </div>
+                        <ul class="sidebar-menu">
+                            <li class="menu-header">Dashboard</li>
+                            <li class="dropdown active">
+                                <a href="#" class="nav-link has-dropdown ">
+                                    <i class="fas fa-fire"></i>
+                                     <span>Dashboard</span>
                                 </a>
+                                <ul class="dropdown-menu">
+                                  <li>
+                                      <a class="nav-link" href="/dashboard">General Dashboard</a>
+                                  </li>
+                                </ul>
                             </li>
-                            <li class="nav-item">
-                                <a href="/dashboard/gudang" class="nav-link">
-                                    <i class="nav-icon fas fa-boxes"></i>
-                                    <p>Gudang Bahan Baku</p>
+                            @if (Auth::user()->roles == "2")
+                            <li class="menu-header">Bahan Baku</li>
+                            <li class="dropdown">
+                                <a href="#" class="nav-link has-dropdown">
+                                    <i class="fas fa-boxes"></i>
+                                     <span>Bahan Baku</span>
                                 </a>
+                                <ul class="dropdown-menu">
+                                  <li>
+                                      <a class="nav-link" href="/">Manajemen Bahan Baku</a>                                      
+                                  </li>
+                                </ul>
                             </li>
-                            <li class="nav-item">
-                                <a href="/dashboard/history" class="nav-link">
-                                    <i class="nav-icon fas fa-history"></i>
-                                    <p>History</p>
+                            <li class="dropdown">
+                                <a href="#" class="nav-link has-dropdown">
+                                    <i class="fas fa-history"></i>
+                                     <span>History</span>
                                 </a>
+                                <ul class="dropdown-menu">
+                                  <li>
+                                      <a class="nav-link" href="/">Bahan Baku (Keluar)</a>
+                                      <a class="nav-link" href="/">Bahan Baku (Masuk)</a>
+                                  </li>
+                                </ul>
                             </li>
-                            <li class="nav-item">
-                                <a href="/dashboard/laporan" class="nav-link">
-                                    <i class="nav-icon far fa-file-alt"></i>
-                                    <p>Download Laporan</p>
+                            <li class="dropdown">
+                                <a class="nav-link has-dropdown" href="#">
+                                    <i class="far fa-file-alt"></i> 
+                                    <span>Laporan</span>
                                 </a>
-                            </li>                         
-                            <li class="nav-item has-treeview">
-                                <a href="#" class="nav-link">
-                                    <i class="nav-icon fas fa-user-cog"></i>
-                                    <p>
-                                        Pengaturan Akun
-                                        <i class="right fas fa-angle-left"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview">
-                                    @if (Auth::user()->roles == 1)
-                                    <li class="nav-item">
-                                        <a href="/dashboard/karyawan" class="nav-link">
-                                            <i class="nav-icon fas fa-chalkboard-teacher"></i>
-                                            <p> Data Pegawai</p>
-                                        </a>
-                                    </li>
-                                    @endif
-                                    <li class="nav-item">
-                                        <a href="/" class="nav-link">
-                                            <i class="fas fa-user-edit nav-icon"></i>
-                                            <p>Edit Akun</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="{{ route('password.request') }}" class="nav-link">
-                                            <i class="fas fa-wrench nav-icon"></i>
-                                            <p>Reset Password</p>
-                                        </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="nav-link" href="/">Bahan Baku</a>                                       
+                                        <a class="nav-link" href="/">Bahan Keluar</a>
                                     </li>
                                 </ul>
                             </li>
-                            <li class="nav-item">
-                                <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault();
-                            document.getElementById('logout-form').submit();">
-                                    <i class="fas fa-sign-out-alt nav-icon"></i>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                        class="d-none">
-                                        @csrf
-                                    </form>
-                                    <p>Logout</p>
+                            @endif
+                            @if (Auth::user()->roles == "1")
+                            <li class="dropdown">
+                                <a class="nav-link has-dropdown" href="#">
+                                    <i class="far fa-file-alt"></i> 
+                                    <span>Laporan</span>
                                 </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="nav-link" href="/">Bahan Baku</a>
+                                        <a class="nav-link" href="/">Pembelian Bahan Keluar</a>
+                                        <a class="nav-link" href="/">Pengeluaran Bahan Keluar</a>
+                                    </li>
+                                </ul>
                             </li>
-                        </ul>
-                    </nav>
+                            @endif
+                            <li class="menu-header">Akun Anda</li>
+                            <li class="dropdown">
+                                <a href="#" class="nav-link has-dropdown">
+                                    <i class="fas fa-chalkboard-teacher"></i>
+                                     <span>Pengaturan Akun</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                  <li>
+                                      <a class="nav-link" href="/">Edit Akun</a>
+                                      <a class="nav-link" href="/">Lupa Password</a>
+                                      <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault();
+                                      document.getElementById('logout-form').submit();">                  
+                                              <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                                  class="d-none">
+                                                  @csrf
+                                              </form>
+                                              Logout
+                                          </a>
+                                  </li>
+                                </ul>
+                            </li>
+                        </ul>                        
+                        {{-- <div class="sidebar">
+                            <nav class="mt-2">
+                                <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">                           
+    
+                                    <li class="nav-item">
+                                        <a href="/dashboard" class="nav-link">
+                                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                                            <p>Dashboard</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/dashboard/gudang" class="nav-link">
+                                            <i class="nav-icon fas fa-boxes"></i>
+                                            <p>Gudang Bahan Baku</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/dashboard/history" class="nav-link">
+                                            <i class="nav-icon fas fa-history"></i>
+                                            <p>History</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/dashboard/history" class="nav-link">
+                                            <i class="nav-icon fas fa-history"></i>
+                                            <p>Jenis Bahan Baku</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/dashboard/laporan" class="nav-link">
+                                            <i class="nav-icon far fa-file-alt"></i>
+                                            <p>Download Laporan</p>
+                                        </a>
+                                    </li>                         
+                                    <li class="nav-item has-treeview">
+                                        <a href="#" class="nav-link">
+                                            <i class="nav-icon fas fa-user-cog"></i>
+                                            <p>
+                                                Pengaturan Akun
+                                                <i class="right fas fa-angle-left"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview">
+                                            @if (Auth::user()->roles == 1)
+                                            <li class="nav-item">
+                                                <a href="/dashboard/karyawan" class="nav-link">
+                                                    <i class="nav-icon fas fa-chalkboard-teacher"></i>
+                                                    <p> Data Pegawai</p>
+                                                </a>
+                                            </li>
+                                            @endif
+                                            <li class="nav-item">
+                                                <a href="/" class="nav-link">
+                                                    <i class="fas fa-user-edit nav-icon"></i>
+                                                    <p>Edit Akun</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="{{ route('password.request') }}" class="nav-link">
+                                                    <i class="fas fa-wrench nav-icon"></i>
+                                                    <p>Reset Password</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault();
+                                    document.getElementById('logout-form').submit();">
+                                            <i class="fas fa-sign-out-alt nav-icon"></i>
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                                class="d-none">
+                                                @csrf
+                                            </form>
+                                            <p>Logout</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div> --}}
+                    </aside>
                 </div>
-            </aside>
-        @endauth
-        @auth
-        <div class="content-wrapper">
-            <div class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">@yield('title-header')</h1>
-                        </div>
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <?php 
-                                    $link = '';
-                                ?>
-                                @for ($i = 1; $i <= count(Request::segments()); $i++)
-                                    @if ($i < count(Request::segments()) & $i > 0)
-                                        <?php $link .= "/" . Request::segment($i); ?>
-                                        <li class="breadcrumb-item"><a href="{{ $link }}">{{ ucwords(str_replace('-', '', Request::segment($i))) }}</a></li>
-                                    @else
-                                        <li class="breadcrumb-item active">{{ ucwords(str_replace('-', '', Request::segment($i))) }}</li>
-                                    @endif
-                                @endfor
-                            </ol>
-                        </div>
+                @endauth
+            <div class="main-content">
+                <section class="section">
+                    @auth
+                    <div class="section-header">
+                        <h1>{{ ucwords(Request::segment(1)) }}</h1>
                     </div>
-                </div>
-            </div>
-        @endauth        
-            <section class="content">
-                <div class="container-fluid">
+                    @endauth
                     @yield('content')
-                </div>
-            </section>  
+                </section>
+            </div>  
         </div>
-         
-        
+                
     </div>
 </body>
 <script src="{{ asset('/plugins/jquery-3.5.1.js') }}"></script>
 <script src="{{ asset('/plugins/jquery-ui/jquery-ui.js') }}"></script>
+<script src="{{ asset('/plugins/stisla/stisla.js') }}"></script>
+<script src="{{ asset('/plugins/stisla/scripts.js') }}"></script>
+<script src="{{ asset('/plugins/stisla/custom.js') }}"></script>
 <script src="{{ asset('/plugins/bootstrap/bootstrap.bundle.js') }}"></script>
-<script src="{{ asset('/plugins/adminlte/adminlte.js') }}"></script>
 <script src="{{ asset('/plugins/popper.min.js') }}"></script>
-<script src="{{ asset('/plugins/fontawesome/all.js') }}"></script>
 <script src="{{ asset('/plugins/sweetalert2/sweetalert2.all.js') }}"></script>
 <script src="{{ asset('/plugins/moment-with-locales.js') }}"></script>
+<script src="{{ asset('/plugins/nicescroll/jquery.nicescroll.min.js') }}"></script>
 <script src="https://momentjs.com/downloads/moment-timezone-with-data-1970-2030.min.js"></script>
 @yield('script')
 </html>
