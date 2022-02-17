@@ -7,9 +7,8 @@ $(document).ready(function () {
         }
     });
 
-    let column = [
-        'name',
-        'type',
+    let column = [ 
+        'descr',
         'qty'
     ];
 
@@ -39,11 +38,14 @@ $(document).ready(function () {
     $('#dataTable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "/history/data",
+        ajax: "/history/data/red",
         columns: [
-            { data: "date_time", name: "date_time"},
-            { data: "name", name: "name"},
-            { data: "type", name: "type" },
+            { data: "created_at", name: "created_at"},
+            { 
+                data: "item.name", 
+                name: "item.name",  
+            },
+            { data: "descr", name: "descr"},
             { data: "qty", name: "qty" },
         ],
         initComplete: function () {
@@ -114,4 +116,64 @@ $(document).ready(function () {
             }
         })
     });
+
+    //delete func
+    $('#form').on('submit', function(e) {
+        e.preventDefault();
+
+        Swal.fire({
+            title: "Apakah kamu yakin ??",
+            text: "Setelah terhapus, ini tidak bisa dikembalikan lagi!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Saya Setuju!",
+            cancelButtonText: "Batalkan"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/history/delete/red',
+                    method: 'DELETE',
+                    dataType: 'JSON',
+                    data: $('#form').serialize(),
+                    beforeSend : function () {
+                        $('#loader-wrapper').show();
+                    },
+                    complete: function() {
+                        $('#loader-wrapper').hide();
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        if (data.success) {
+                            Swal.fire("Sukses!", data.success, "success");
+                            location.reload();
+                        } else {
+                            Swal.fire("Peringatan!", data.info, "warning");
+                        }
+                        
+                    },
+                    error: function (response) {
+                        console.log(response);
+        
+                        var text = '';
+                    
+                        for (key in response.responseJSON.errors) {
+                            text += message(response.responseJSON.errors[key]);                    
+                        }
+                        
+                        Swal.fire(
+                            'Whoops ada Kesalahan',
+                            `Error : <br> ${text}`,
+                            'error'
+                        )
+                    }
+                });
+            } else {
+                Swal.fire("Batal !","Opreasi penghapusan dibatalkan", "warning")
+            }
+        });
+
+       
+    })
 })

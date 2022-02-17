@@ -25,7 +25,6 @@
     <link rel="stylesheet" href="{{ asset('/plugins/sweetalert2/sweetalert2.css') }}">
     <link rel="stylesheet" href="{{ asset('/plugins/loader.min.css') }}">
 
-
     @yield('css')
 </head>
 
@@ -67,7 +66,7 @@
                                      <span>Dashboard</span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                  <li>
+                                  <li class="active">
                                       <a class="nav-link" href="/dashboard">General Dashboard</a>
                                   </li>
                                 </ul>
@@ -81,7 +80,14 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                   <li>
-                                      <a class="nav-link" href="/">Manajemen Bahan Baku</a>                                      
+                                      <a class="nav-link" href="/dashboard/gudang">Manajemen Bahan Baku</a>      
+                                                                 
+                                  </li>
+                                  <li>
+                                    <a class="nav-link" href="/dashboard/types">Jenis Bahan Baku</a>     
+                                  </li>
+                                  <li>
+                                    <a class="nav-link" href="/dashboard/units">Satuan Bahan Baku</a>     
                                   </li>
                                 </ul>
                             </li>
@@ -92,8 +98,8 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                   <li>
-                                      <a class="nav-link" href="/">Bahan Baku (Keluar)</a>
-                                      <a class="nav-link" href="/">Bahan Baku (Masuk)</a>
+                                      <a class="nav-link" href="/dashboard/history/out">Bahan Baku (Keluar)</a>
+                                      <a class="nav-link" href="/dashboard/history/in">Bahan Baku (Masuk)</a>
                                   </li>
                                 </ul>
                             </li>
@@ -233,11 +239,11 @@
                 <section class="section">
                     @auth
                     <div class="section-header">
-                        <h1>{{ ucwords(Request::segment(1)) }}</h1>
+                        <h1>@yield('title-header')</h1>
                     </div>
-                    @endauth
-                    @yield('content')
+                    @endauth                   
                 </section>
+                @yield('content')
             </div>  
         </div>
                 
@@ -245,9 +251,9 @@
 </body>
 <script src="{{ asset('/plugins/jquery-3.5.1.js') }}"></script>
 <script src="{{ asset('/plugins/jquery-ui/jquery-ui.js') }}"></script>
+<script src="{{ asset('/plugins/bootstrap/bootstrap.js') }}"></script>
 <script src="{{ asset('/plugins/stisla/stisla.js') }}"></script>
 <script src="{{ asset('/plugins/stisla/scripts.js') }}"></script>
-<script src="{{ asset('/plugins/stisla/custom.js') }}"></script>
 <script src="{{ asset('/plugins/bootstrap/bootstrap.bundle.js') }}"></script>
 <script src="{{ asset('/plugins/popper.min.js') }}"></script>
 <script src="{{ asset('/plugins/sweetalert2/sweetalert2.all.js') }}"></script>

@@ -11,7 +11,22 @@ class LaporanController extends Controller
         return view('laporan');
     }
 
-    public function laporanDivisi(Request $req){
-        $data = History::select('name');
+    public function downloadLaporan(Request $req) {
+
+        if ($req->type === "bbkeluar") {
+            
+            $data = History::with('item:id,name')
+                            ->where('act', 'red')
+                            ->whereMonth('created_at', $req->month)
+                            ->whereYear('created_at', $req->year)
+                            ->orderBy('created_at', 'asc')
+                            ->get();
+
+        } else if ($req->type === "bbmasuk") {
+
+        } else if ($req->type === "bb") {
+
+        }
+        
     }
 }

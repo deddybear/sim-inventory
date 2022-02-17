@@ -5,7 +5,7 @@ $(document).ready(function () {
 
     let column = [
         'name',
-        'type',
+        'type.name',
         'qty'
     ];
 
@@ -13,6 +13,12 @@ $(document).ready(function () {
         headers: {
             'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
         }
+    });
+
+    const idrFormatter = new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        minimumFractionDigits: 0,
     });
 
     function domModal(textTitle, textConfrim, textClose) {
@@ -40,10 +46,21 @@ $(document).ready(function () {
                 searchable: false,
             },
             { data: "name", name: "name" },
-            { data: "type", name: "type" },
+            { data: "type.name", name: "type.name" },            
             { data: "qty", name: "qty" },
+            { data: "unit.name", name: "unit.name"},
+            { 
+                data: function (row) {
+                    return idrFormatter.format(row.price);
+                }, 
+                name: "price"},
+            { 
+                data: function (row) {
+                    return idrFormatter.format(row.total);
+                }, 
+                name: "total"},
             { data: "date_entry", name: "date_entry" },
-            { data: "date_out", name: "date_out" },
+            { data: "date_out", name: "date_out"},
             {
                 data: "Actions",
                 name: "Actions",
@@ -69,7 +86,7 @@ $(document).ready(function () {
 
             $('#loader-wrapper').hide();
         },
-    })
+    });
 
     // DOM Search func
     $("#dataTable tfoot .search").each(function (i) {
@@ -191,7 +208,7 @@ $(document).ready(function () {
           }).then((result) => {
             if (result.isConfirmed) {
                 
-                Swal.fire("Sukses!", "Berhasil Ditambahkan", "success");
+                Swal.fire("Sukses!", "Berhasil Dikurangi", "success");
                 location.reload();
             }
           })
@@ -279,14 +296,14 @@ $(document).ready(function () {
                     complete: function() {
                         $('#loader-wrapper').hide();
                     },
-                    success: function (data) {
-                        Swal.fire("Deleted!", data.success, "success");
+                    success: function (response) {
+                        Swal.fire("Deleted!", response.success, "success");
                         location.reload();
                     },
-                    error: function () {
+                    error: function (response) {
                         Swal.fire(
                             'Whoops ada Kesalahan',
-                            `Error : Mohon dicoba lagi`,
+                            `Error : ${response.responseJSON.errors}`,
                             'error'
                         )
                     }

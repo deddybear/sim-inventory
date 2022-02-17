@@ -1,7 +1,12 @@
 @extends('layouts.app')
 
 @section('title', 'Dashboard SIM - Inventory')
-@section('title-header', 'History Gudang')
+@if (request()->is('dashboard/history/out'))
+    @section('title-header', 'Pengeluaran Bahan Baku Gudang')
+@else
+    @section('title-header', 'Pemasukan Bahan Baku Gudang')
+@endif
+
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('/plugins/dataTables/datatables.css') }}">
@@ -20,7 +25,11 @@
 <script src="{{ asset('/plugins/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.js') }}"></script>
 <script src="{{ asset('/plugins/sweetalert2/sweetalert2.js') }}"></script>
 <script src="{{ asset('/plugins/dataTables/datatables.js') }}"></script>
-<script src="{{ asset('/pages/history/script.js') }}"></script>
+@if (request()->is('dashboard/history/out'))
+    <script src="{{ asset('/pages/history/keluar.js') }}"></script>
+@else
+<script src="{{ asset('/pages/history/masuk.js') }}"></script>
+@endif
 @endsection
 
 @section('content')
@@ -33,8 +42,8 @@
                         <thead>
                             <tr>
                                 <th>Waktu</th>
-                                <th>Nama</th>
-                                <th>Jenis</th>
+                                <th>Nama Bahan Baku</th>
+                                <th>Deskripsi</th>
                                 <th>Kuantitas</th>                                
                             </tr>
                         </thead>
@@ -42,18 +51,18 @@
                         </tbody>
                         <tfoot>
                             <th><input type="text" class="date text-sm form-control" placeholder="Search Date"></th>
-                            <th class="search"></th>
-                            <th class="search"></th>
-                            <th class="search"></th>                        
+                            <th></th>
+                            <th></th>
+                            <th></th>                        
                         </tfoot>
                     </table>
                 </div>
             </div>
         </div>
-        @if (Auth::user()->roles == 1)
+ 
         <div class="card">
             <div class="card-body">
-                <h5>Hapus Periode Data Akitivitas</h5>
+                <h5>Hapus Periode Data</h5>
                 <div class="mt-5">
                     <form id="form" method="POST">
                         @csrf
@@ -91,7 +100,7 @@
                 </div>
             </div>
         </div>
-        @endif
+       
     </div>  
 </div>
 @endsection

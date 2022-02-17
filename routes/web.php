@@ -3,8 +3,10 @@
 use App\Http\Controllers\GudangController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\JenisBahanBakuController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\UnitsController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -32,12 +34,15 @@ Route::get('/password', function (){
 });
 
 Route::middleware(['auth'])->group(function () {
-
+    //view
     Route::prefix('dashboard')->group(function () {
         Route::get('/', [HomeController::class, 'index'])->name('home');
         Route::get('/gudang', [GudangController::class, 'index']);
         Route::get('/laporan', [LaporanController::class, 'index']);
-        Route::get('/history', [HistoryController::class, 'index']);
+        Route::get('/history/out', [HistoryController::class, 'index']);
+        Route::get('/history/in', [HistoryController::class, 'index']);
+        Route::get('/types', [JenisBahanBakuController::class, 'index']);
+        Route::get('/units', [UnitsController::class, 'index']);
 
         Route::middleware(['divisi'])->group(function () {
             Route::get('/karyawan', [KaryawanController::class, 'index']);
@@ -55,14 +60,30 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/delete/{id}', [GudangController::class, 'destroy']);
     });
 
+    Route::prefix('type')->group(function () {
+        Route::get('/data', [JenisBahanBakuController::class, 'data']);
+        Route::get('/search', [JenisBahanBakuController::class, 'search']);
+        Route::post('/create', [JenisBahanBakuController::class, 'create']);
+        Route::put('/update/{id}', [JenisBahanBakuController::class, 'update']);
+        Route::delete('/delete/{id}', [JenisBahanBakuController::class, 'destroy']);
+    });
+
+    Route::prefix('unit')->group(function () {
+        Route::get('/data', [UnitsController::class, 'data']);
+        Route::get('/search', [UnitsController::class, 'search']);
+        Route::post('/create', [UnitsController::class, 'create']);
+        Route::put('/update/{id}', [UnitsController::class, 'update']);
+        Route::delete('/delete/{id}', [UnitsController::class, 'destroy']);
+    });
+
     Route::prefix('history')->group(function () {
-        Route::get('/data', [HistoryController::class, 'data']);
+        Route::get('/data/{params}', [HistoryController::class, 'data']);
         Route::get('/search', [HistoryController::class, 'search']);
-        Route::delete('/delete/{id}', [HistoryController::class, 'destroy']);
+        Route::delete('/delete/{params}', [HistoryController::class, 'destroy']);
     });
 
     Route::prefix('laporan')->group(function () {
-        Route::get('/', [LaporanController::class, 'laporanDivisi']);
+        Route::post('/', [LaporanController::class, 'downloadLaporan']);
     });
 
 

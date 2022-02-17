@@ -12,11 +12,14 @@ class History extends Model
 
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $table = 'History';
     protected $guarded = [];
 
-    protected $dateFormat = 'Y-m-d H:i:s'; 
-    protected $casts = [
-        'date_entry' => 'datetime:Y-m-d H:i:s',
+    protected $hidden = [
+        'items_id',       
     ];
+    public $timestamps = false;
+    
+    public function item(){
+       return $this->hasOne(Item::class, 'id', 'items_id');
+    }
 }

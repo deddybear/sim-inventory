@@ -1,27 +1,32 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\BahanBaku;
+
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Ramsey\Uuid\Uuid as Generate;
-use App\Http\Controllers\HistoryController as History;
+use App\Http\Controllers\HistoryController as HistoryC;
+use App\Models\History;
+use App\Models\Item;
+use App\Models\Type;
+use App\Models\Unit;
 
 class GudangController extends Controller {
     
 
     public function index() {
-        return view('gudang-bahan');
+        $listType = Type::select('id', 'name')->orderBy('created_at', 'desc')->get();
+        $listUnit = Unit::select('id', 'name')->orderBy('created_at', 'desc')->get();
+
+        return view('gudang-bahan', compact('listType', 'listUnit'));
     }
 
     public function data() {
-        $data = BahanBaku::orderBy('date_entry', 'desc');
-        
-        if (Auth::user()->roles == 1) { //kepala devisi
-            return DataTables::eloquent($data)
+        $data = Item::with('type:id,name', 'unit:id,name')->orderBy('date_entry', 'desc');
+        return DataTables::eloquent($data)
                                ->addIndexColumn()
                                ->editColumn('date_entry', function ($data) {
                                  return Carbon::createFromFormat('Y-m-d H:i:s', $data->date_entry, 'Asia/Jakarta')
@@ -33,45 +38,23 @@ class GudangController extends Controller {
                                          ->format('Y-m-d H:i:s');
                                      }
                                  
-                                     return 'Data Kosong';
+                                     return ' - ';
                                })
                                ->addColumn('Actions', function($data){
-                                 return '<a href="javascript:;" class="btn btn-xs btn-info adding" data="'.$data->id.'">Tambah Stock</a>
-                                 <a href="javascript:;" class="btn btn-xs btn-warning reduce" data="'.$data->id.'">Kurangi Stock</a>
-                                 <a href="javascript:;" class="btn btn-xs btn-danger delete" data="'.$data->id.'">Hapus</a>
+                                 return '<a href="javascript:;" class="btn btn-xs btn-info adding" data="'.$data->id.'"><i class="fas fa-plus"></i></a>
+                                 <a href="javascript:;" class="btn btn-xs btn-warning reduce" data="'.$data->id.'"><i class="fas fa-minus"></i></a>
+                                 <a href="javascript:;" class="btn btn-xs btn-danger delete" data="'.$data->id.'"><i class="far fa-trash-alt"></i></a>
                                  ';
                                })                          
                                ->rawColumns(['Actions'])
                                ->toJson();
-        } else if (Auth::user()->roles == 2) {
-            return DataTables::eloquent($data)
-                              ->addIndexColumn()
-                              ->editColumn('date_entry', function ($data) {
-                                return Carbon::createFromFormat('Y-m-d H:i:s', $data->date_entry, 'Asia/Jakarta')
-                                               ->format('Y-m-d H:i:s');
-                                })
-                              ->editColumn('date_out', function ($data) {
-                                    if(!empty($data->date_out)){
-                                        return Carbon::createFromFormat('Y-m-d H:i:s', $data->date_out, 'Asia/Jakarta')
-                                        ->format('Y-m-d H:i:s');
-                                    }
-                                  
-                                    return 'Data Kosong';
-                              })
-                              ->addColumn('Actions', function($data){
-                                return '
-                                <a href="javascript:;" class="btn btn-xs btn-warning reduce" data="'.$data->id.'">Kurangi Stock</a>
-                                ';
-                              })                          
-                              ->rawColumns(['Actions'])
-                              ->toJson();
-        }
+
 
         
     }
 
     public function search(Request $req) {
-        $data = BahanBaku::select($req->column)
+        $data = Item::select($req->column)
                          ->whereRaw("LOWER($req->column) LIKE ?", ["%".strtolower($req->keyword)."%"])
                          ->distinct()
                          ->get();
@@ -86,22 +69,28 @@ class GudangController extends Controller {
      */
     public function create(Request $req) {
         date_default_timezone_set('Asia/Jakarta');     
+        $id = Generate::uuid4();
 
         $data = array(
-            'id'    => Generate::uuid4(),
+            'id'    => $id,
+            'types_id' => $req->type,
+            'units_id' => $req->unit,
             'name'  => $req->name,
-            'type'  => $req->type,
             'qty'   => $req->qty,
-            'date_entry' => Date('Y-m-d H:i:s'),
+            'price' => $req->price,
+            'total' => $req->qty * $req->price, 
+            'date_entry' => Date('Y-m-d H:i:s')
         );
 
         try {
-            DB::table('bahan_baku')->insert($data);
+            
+            Item::create($data);    
 
-            History::create(
-                "Penambahan Data Bahan Baku $req->name", 
-                $req->type, 
-                $req->qty
+            HistoryC::create(
+                $id,
+               'add',
+               "Pembelian Bahan Baku",
+               $req->qty,
             );
 
             return response()->json(['success' => 'Berhasil Menambahkan Data Bahan Baku']);
@@ -112,18 +101,19 @@ class GudangController extends Controller {
 
     public function addingStock($value, $id){
         try {
-            date_default_timezone_set('Asia/Jakarta');     
-            $data = BahanBaku::where('id', $id)->first();
+            date_default_timezone_set('Asia/Jakarta');
+            $data = Item::where('id', $id)->first();
             $stockNew = $data->qty + $value;
-
-            DB::table('bahan_baku')->where('id', $id)->update([
+            
+            Item::where('id', $id)->update([
                 'date_entry' => Date('Y-m-d H:i:s'),
                 'qty' => $stockNew
             ]);
             
-            History::create(
-                "Penambahan Pada : $data->name", 
-                $data->type, 
+            HistoryC::create(
+                $id,
+                'add', 
+                "Penambahan Stock",
                 $value
             );
 
@@ -136,17 +126,19 @@ class GudangController extends Controller {
 
     public function reduceStock($value, $id){
         try {
-            $data = BahanBaku::where('id', $id)->first();
+            date_default_timezone_set('Asia/Jakarta');
+            $data = Item::where('id', $id)->first();
             $stockNew = $data->qty - $value;
 
-            DB::table('bahan_baku')->where('id', $id)->update([
+            DB::table('items')->where('id', $id)->update([
                 'date_out' => Date('Y-m-d H:i:s'),
                 'qty' => $stockNew
             ]);
 
-            History::create(
-                "Pengurangan Pada : $data->name", 
-                $data->type, 
+            HistoryC::create(
+                $id,
+                'red', 
+                "Pengurangan Stock", 
                 $value
             );
             return response()->json(['success' => 'Berhasil Mengurangi Stock Bahan Baku']);
@@ -157,12 +149,12 @@ class GudangController extends Controller {
 
     public function destroy($id) {
         try {
-            $data = BahanBaku::where('id', $id)->first();
+            $data = Item::where('id', $id)->first();
             $data->delete();
 
             return response()->json(['success' => 'Berhasil Menghapus Data Gudang']);
         } catch (\Throwable $th) {
-            return response()->json(['errors' => 'Internal Server Error'], 500);
+            return response()->json(['errors' => 'Dimohon untuk menghapus Histori yang berkaitan dengan data tersebut'], 500);
         }
     }
 }
