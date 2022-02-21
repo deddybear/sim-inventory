@@ -1,10 +1,11 @@
 $(document).ready(function() {
-    moment.locale("id");
     let method;
     let id;
 
     let column = [
-        'name'
+        'name',
+        'email',
+        'roles'
     ];
 
     $.ajaxSetup({
@@ -41,7 +42,7 @@ $(document).ready(function() {
     $('#dataTable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "/type/data",
+        ajax: "/karyawan/data",
         columns: [
             {
                 data: "DT_RowIndex",
@@ -49,8 +50,9 @@ $(document).ready(function() {
                 orderable: false,
                 searchable: false,
             },
-            { data: "id", name: "id" },
             { data: "name", name: "name" },
+            { data: "email", name: "email"},
+            { data: "roles", name: "roles"},
             { data: "created_at", name: "created_at" },
             { data: "updated_at", name: "updated_at" },
             {
@@ -100,7 +102,7 @@ $(document).ready(function() {
             scroll: true,
             source: function (request, response) {
                 $.ajax({
-                    url: `/type/search`,
+                    url: `/karyawan/search`,
                     dataType: "JSON",
                     data: {
                         keyword: request.term,
@@ -133,7 +135,7 @@ $(document).ready(function() {
     //DOM add data func
     $('#add').click(function() {
         $("#form")[0].reset();
-        domModal('Menambahkan Jenis Bahan Baku', 'Tambah', 'Batalkan')
+        domModal('Menambahkan Data Karyawan', 'Tambah', 'Batalkan')
         method = "POST";
 
     });
@@ -143,25 +145,17 @@ $(document).ready(function() {
         method = "PUT";
         $('#form')[0].reset()
         id = $(this).attr('data')
-        domModal('Edit Jenis Bahan Baku', 'Simpan Perubahan', 'Batalkan')
+        domModal('Edit Data Karyawan', 'Simpan Perubahan', 'Batalkan')
         $('#modal_form').modal('show')
     });
 
-    //add | edit func
+    //add
     $("#form").on("submit", function (e) {
         e.preventDefault();
-        var url;
-
-        console.log(`submit ${method}`);
-        if (method == "POST") {
-            url = "/type/create";
-        } else if (method == "PUT") {
-            url = `/type/update/${id}`;
-        }
 
         $.ajax({
-            url: url,
-            method: method,
+            url: "/karyawan/create",
+            method: "POST",
             dataType: "JSON",
             data: $("#form").serialize(),
             beforeSend : function () {
@@ -178,9 +172,47 @@ $(document).ready(function() {
                 }
             },
             error: function (res) {
-                console.log(res);
-                let text = ''; 
+                let text = '';      
+                
+                for (const key in res.responseJSON.errors) {
+                    text += message(res.responseJSON.errors[key]); 
+                }
 
+                Swal.fire(
+                    'Whoops ada Kesalahan',
+                    `Error : <br> ${text}`,
+                    'error'
+                )
+            },
+        });
+    });
+
+    $("#form-update").on("submit", function (e) {
+        let id = $(this).attr("data-id");
+        console.log(id);
+        e.preventDefault();
+
+        $.ajax({
+            url: `/karyawan/update/${id}`,
+            method: "PUT",
+            dataType: "JSON",
+            data: $("#form-update").serialize(),
+            beforeSend : function () {
+                $('#loader-wrapper').show();
+            },
+            complete: function() {
+                $('#loader-wrapper').hide();
+            },
+            success: function (data) {
+         
+                if (data.success) {
+                    Swal.fire("Sukses!", data.success, "success");
+                    location.reload();
+                }
+            },
+            error: function (res) {
+                let text = '';      
+                
                 for (const key in res.responseJSON.errors) {
                     text += message(res.responseJSON.errors[key]); 
                 }
@@ -209,7 +241,7 @@ $(document).ready(function() {
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: `/type/delete/${id}`,
+                    url: `/karyawan/delete/${id}`,
                     method: 'DELETE',
                     dataType: 'JSON',
                     beforeSend : function () {
@@ -218,17 +250,18 @@ $(document).ready(function() {
                     complete: function() {
                         $('#loader-wrapper').hide();
                     },
-                    success: function (response) {
-                        Swal.fire("Deleted!", response.success, "success");
+                    success: function (res) {
+                        Swal.fire("Deleted!", res.success, "success");
                         location.reload();
                     },
                     error: function (res) {
-                        let text = ''; 
-
+                        let text = '';
+                        console.log(res.responseJSON.errors);
+                        
                         for (const key in res.responseJSON.errors) {
                             text += message(res.responseJSON.errors[key]); 
                         }
-        
+
                         Swal.fire(
                             'Whoops ada Kesalahan',
                             `Error : <br> ${text}`,

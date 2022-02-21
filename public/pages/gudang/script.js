@@ -15,6 +15,19 @@ $(document).ready(function () {
         }
     });
 
+    let message = messageErrors => {
+        var temp = '';
+        if (messageErrors instanceof Array) {
+                messageErrors.forEach(element => {
+                    temp += `${element} <br>`
+                });
+                return temp;
+        } else {
+            return messageErrors ? `${messageErrors} <br>` : ' '
+        }
+       
+    }
+
     const idrFormatter = new Intl.NumberFormat("id-ID", {
         style: "currency",
         currency: "IDR",
@@ -45,6 +58,7 @@ $(document).ready(function () {
                 orderable: false,
                 searchable: false,
             },
+            { data: "item_code", name: "item_code" },
             { data: "name", name: "name" },
             { data: "type.name", name: "type.name" },            
             { data: "qty", name: "qty" },
@@ -262,10 +276,15 @@ $(document).ready(function () {
                 }
             },
             error: function (response) {
-                console.log(response);
+                var text = '';
+                    
+                for (key in response.responseJSON.errors) {
+                    text += message(response.responseJSON.errors[key]);                    
+                }
+                
                 Swal.fire(
                     'Whoops ada Kesalahan',
-                    `Error : Coba dicoba beberapa saat lagi`,
+                    `Error : <br> ${text}`,
                     'error'
                 )
             },
@@ -301,9 +320,15 @@ $(document).ready(function () {
                         location.reload();
                     },
                     error: function (response) {
+                        var text = '';
+                    
+                        for (key in response.responseJSON.errors) {
+                            text += message(response.responseJSON.errors[key]);                    
+                        }
+                        
                         Swal.fire(
                             'Whoops ada Kesalahan',
-                            `Error : ${response.responseJSON.errors}`,
+                            `Error : <br> ${text}`,
                             'error'
                         )
                     }

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class History extends Model
 {
@@ -13,7 +14,7 @@ class History extends Model
     public $incrementing = false;
     protected $keyType = 'string';
     protected $guarded = [];
-
+    
     protected $hidden = [
         'items_id',       
     ];

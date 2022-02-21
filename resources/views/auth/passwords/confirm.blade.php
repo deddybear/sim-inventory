@@ -1,5 +1,14 @@
 @extends('layouts.app')
 
+@section('css')
+    <style>
+        .main-content {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+    </style>
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">

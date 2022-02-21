@@ -30,6 +30,7 @@
                         <thead>
                             <tr>
                                 <th>No. </th>
+                                <th>Kode Bahan Baku</th>
                                 <th>Nama Bahan Baku</th>
                                 <th>Jenis</th>
                                 <th>Kuantitas</th>
@@ -44,6 +45,7 @@
                         <tbody>
                         </tbody>
                         <tfoot>
+                            <th></th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -104,6 +106,13 @@
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
                                     @endforeach
                                 </select>
+                                <div class="d-block"> 
+                                    <div class="float-right">
+                                      <a href="/dashboard/types" class="text-small">
+                                        Ingin Menambahkan Jenis Bahan Baku ?
+                                      </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -117,6 +126,13 @@
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
                                     @endforeach
                                 </select>
+                                <div class="d-block"> 
+                                    <div class="float-right">
+                                      <a href="/dashboard/units" class="text-small">
+                                        Ingin Menambahkan Satuan ?
+                                      </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -124,7 +140,7 @@
                         <div class="form-group">
                             <label class="control-label col-md-5">Kuantitas</label>
                             <div class="col-md-12">
-                                <input type="number" class="form-control" name="qty" id="qty" min="1" max="1000"
+                                <input type="number" class="form-control" name="qty" id="qty" min="1"
                                     placeholder="Kuantitas" required>
                             </div>
                         </div>
@@ -133,7 +149,7 @@
                         <div class="form-group">
                             <label class="control-label col-md-5">Harga Satuan</label>
                             <div class="col-md-12">
-                                <input type="number" class="form-control" name="price" id="price" min="1" max="1000"
+                                <input type="number" class="form-control" name="price" id="price" min="1"
                                     placeholder="Harga Satuan" required>
                             </div>
                         </div>

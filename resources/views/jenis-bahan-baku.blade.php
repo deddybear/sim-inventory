@@ -30,6 +30,7 @@
                         <thead>
                             <tr>
                                 <th>No. </th>
+                                <th>Kode Jenis</th>
                                 <th>Nama</th>
                                 <th>Dibuat Pada</th>
                                 <th>Diubah Pada</th>
@@ -68,7 +69,16 @@
 
                         {{-- Jenis Bahan Baku --}}
                         <div class="form-group">
-                            <label class="control-label col-md-5">Jenis Bahan Baku</label>
+                            <label class="control-label col-md-5">Kode Jenis</label>
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" name="id" id="id"
+                                    placeholder="Kode Jenis" required>
+                            </div>
+                        </div>
+
+                        {{-- Jenis Bahan Baku --}}
+                        <div class="form-group">
+                            <label class="control-label col-md-5">Nama Jenis Bahan Baku</label>
                             <div class="col-md-12">
                                 <input type="text" class="form-control" name="name" id="name"
                                     placeholder="Jenis Bahan Baku" required>

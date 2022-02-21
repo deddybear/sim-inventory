@@ -116,7 +116,7 @@
                                 </ul>
                             </li>
                             @endif
-                            @if (Auth::user()->roles == "1")
+                            @if (Auth::user()->roles == "1")                           
                             <li class="dropdown">
                                 <a class="nav-link has-dropdown" href="#">
                                     <i class="far fa-file-alt"></i> 
@@ -139,8 +139,10 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                   <li>
-                                      <a class="nav-link" href="/">Edit Akun</a>
-                                      <a class="nav-link" href="/">Lupa Password</a>
+                                      @if (Auth::user()->roles == "1")
+                                        <a class="nav-link" href="/dashboard/karyawan">Pengelolah Akun Gudang</a>
+                                      @endif
+                                      <a class="nav-link" href="/dashboard/akun/edit">Edit Akun</a>
                                       <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault();
                                       document.getElementById('logout-form').submit();">                  
                                               <form id="logout-form" action="{{ route('logout') }}" method="POST"

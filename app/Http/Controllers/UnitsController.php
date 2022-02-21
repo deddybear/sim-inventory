@@ -60,7 +60,7 @@ class UnitsController extends Controller {
             
             return response()->json(['success' => 'Berhasil Menambahkan Data Jenis Bahan Baku']);
         } catch (\Throwable $th) {
-            return response()->json(['errors' => 'Internal Server Error'], 500);
+            return response()->json(['errors' => ['errors' => 'Internal Server Error']], 500);
         }
     }
     
@@ -75,7 +75,7 @@ class UnitsController extends Controller {
             Unit::where('id', $id)->update($data);
             return response()->json(['success' => 'Berhasil Memperbarui Data Jenis Bahan Baku']);
         } catch (\Throwable $th) {
-            return response()->json(['errors' => 'Internal Server Error'], 500);
+            return response()->json(['errors' => ['errors' => 'Internal Server Error']], 500);
         }
     }
     
@@ -84,7 +84,7 @@ class UnitsController extends Controller {
             Unit::where('id', $id)->delete();
             return response()->json(['success' => 'Berhasil Menghapus Data Jenis Bahan Haku']);
         } catch (\Throwable $th) {
-            return response()->json(['errors' => 'Internal Server Error'], 500);
+            return response()->json(['errors' => ['errors' => 'Internal Server Error']], 500);
         }
     }
 }

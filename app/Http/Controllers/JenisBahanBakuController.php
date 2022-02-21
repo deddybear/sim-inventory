@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ValidationJenis;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -46,11 +47,11 @@ class JenisBahanBakuController extends Controller {
         return $data;
     }
 
-    public function create(Request $req){
+    public function create(ValidationJenis $req) {
         date_default_timezone_set('Asia/Jakarta');
 
         $data = array(
-            'id' => Generate::uuid4(),
+            'id' => $req->id,
             'name' => $req->name,
         );
 
@@ -59,14 +60,14 @@ class JenisBahanBakuController extends Controller {
             
             return response()->json(['success' => 'Berhasil Menambahkan Data Jenis Bahan Baku']);
         } catch (\Throwable $th) {
-            return response()->json(['errors' => 'Internal Server Error'], 500);
+            return response()->json(['errors' => ['errors' => 'Internal Server Error']], 500);
         }
     }
     
-    public function update($id, Request $req){
+    public function update($id, ValidationJenis $req) {
         
         $data = array(
-            'id' => Generate::uuid4(),
+            'id' => $req->id,
             'name' => $req->name,
         );
 
@@ -74,7 +75,7 @@ class JenisBahanBakuController extends Controller {
             Type::where('id', $id)->update($data);
             return response()->json(['success' => 'Berhasil Memperbarui Data Jenis Bahan Baku']);
         } catch (\Throwable $th) {
-            return response()->json(['errors' => 'Internal Server Error'], 500);
+            return response()->json(['errors' => ['errors' => 'Internal Server Error']], 500);
         }
     }
     
@@ -83,7 +84,7 @@ class JenisBahanBakuController extends Controller {
             Type::where('id', $id)->delete();
             return response()->json(['success' => 'Berhasil Menghapus Data Jenis Bahan Haku']);
         } catch (\Throwable $th) {
-            return response()->json(['errors' => 'Internal Server Error'], 500);
+            return response()->json(['errors' => ['errors' => 'Internal Server Error']], 500);
         }
     }
 }

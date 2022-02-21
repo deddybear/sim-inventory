@@ -1,7 +1,21 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard SIM - Data Operator Gudang')
-@section('title-header', 'Data Operator Gudang')
+@section('title', 'Dashboard SIM - Data Akun SIM-Inventory')
+@section('title-header', 'Data Akun SIM-Inventory')
+
+@section('css')
+<link rel="stylesheet" href="{{ asset('/plugins/dataTables/datatables.css') }}">
+<link rel="stylesheet" href="{{ asset('/plugins/sweetalert2/sweetalert2.css') }}">
+<link rel="stylesheet" href="{{ asset('/plugins/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.css') }}">
+@endsection
+
+@section('script')
+<script src="{{ asset('/plugins/moment-with-locales.js') }}"></script>  
+<script src="{{ asset('/plugins/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.js') }}"></script>
+<script src="{{ asset('/plugins/sweetalert2/sweetalert2.js') }}"></script>
+<script src="{{ asset('/plugins/dataTables/datatables.js') }}"></script>
+<script src="{{ asset('/pages/karyawan/script.js') }}"></script>
+@endsection
 
 @section('content')
 <div class="row justrify-content-center">
@@ -21,6 +35,7 @@
                                 <th>No. </th>
                                 <th>Nama</th>
                                 <th>Email</th>
+                                <th>Jabatan</th>
                                 <th>Tanggal Daftar</th>
                                 <th>Tanggal Update</th>
                                 <th>Aksi</th>
@@ -32,6 +47,7 @@
                             <th></th>
                             <th class="search"></th>
                             <th class="search"></th>
+                            <th ></th>
                             <th><input type="text" class="date text-sm form-control" placeholder="Search Date"></th>
                             <th><input type="text" class="date text-sm form-control" placeholder="Search Date"></th>
                             <th></th>
@@ -41,5 +57,78 @@
             </div>
         </div>
     </div>  
+</div>
+
+<div class="modal fade" id="modal_form" tabindex="1050"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width: 500px !important">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <span id="result"></span>
+                <form class="form-horizontal" id="form">
+                    <div class="form-body p-3">
+                        
+                        {{-- Jabatan --}}
+                        <div class="form-group">
+                            <label class="control-label col-md-5">Jabatan</label>
+                            <div class="col-md-12">
+                                <select name="roles" id="roles" class="form-control" required>
+                                    <option value="" selected>Silahkan Dipilih</option>
+                                    <option value="1" >Kepala Divisi Gudang</option>
+                                    <option value="2" >Operator Gudang</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        {{-- Nama Akun --}}
+                        <div class="form-group">
+                            <label class="control-label col-md-5">Nama</label>
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" name="name" id="name"
+                                    placeholder="Nama" required>
+                            </div>
+                        </div>
+
+                        {{-- Password --}}
+                        <div class="form-group">
+                            <label class="control-label col-md-5">Password</label>
+                            <div class="col-md-12">
+                                <input type="password" class="form-control" name="password" id="password" 
+                                    placeholder="Password" required>
+                            </div>
+                        </div>
+
+                        {{-- Konfrimasi Password --}}
+                        <div class="form-group">
+                            <label class="control-label col-md-5">Password</label>
+                            <div class="col-md-12">
+                                <input type="password" class="form-control" name="password_confirmation" id="password-confirm" 
+                                    placeholder="Password" required>
+                            </div>
+                        </div>
+
+                        {{-- Email --}}
+                        <div class="form-group">
+                            <label class="control-label col-md-5">Email</label>
+                            <div class="col-md-12">
+                                <input type="email" class="form-control" name="email" id="email" 
+                                    placeholder="Email" required>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btn-cancel" type="button" class="btn btn-secondary" data-dismiss="modal"></button>
+                        <button id="btn-confrim" type="submit" class="btn btn-primary"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

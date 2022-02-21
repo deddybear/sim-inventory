@@ -7,6 +7,19 @@ $(document).ready(function () {
         }
     });
 
+    let message = messageErrors => {
+        var temp = '';
+        if (messageErrors instanceof Array) {
+                messageErrors.forEach(element => {
+                    temp += `${element} <br>`
+                });
+                return temp;
+        } else {
+            return messageErrors ? `${messageErrors} <br>` : ' '
+        }
+       
+    }
+
     let column = [ 
         'descr',
         'qty'
@@ -47,6 +60,13 @@ $(document).ready(function () {
             },
             { data: "descr", name: "descr"},
             { data: "qty", name: "qty" },
+            {
+                data: "Actions",
+                name: "Actions",
+                orderable: false,
+                serachable: false,
+                sClass: "text-center",
+            },
         ],
         initComplete: function () {
             this.api()
@@ -117,6 +137,73 @@ $(document).ready(function () {
         })
     });
 
+    //func rollback
+    $('tbody').on('click', '.delete', function() {
+
+        let id   = $(this).attr('data');
+        let desc = $(this).data('desc');
+        let name = $(this).data('name');
+        let act  = $(this).data('act');
+        let qty =  $(this).data('qty');
+
+        Swal.fire({
+            title: `Apakah Ingin Merollback <br> ${desc} ${name} ? `,
+            text: "Setelah terollback, ini tidak bisa dikembalikan lagi!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Saya Setuju!",
+            cancelButtonText: "Batalkan"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: `/history/rollback/${id}`,
+                    method: 'DELETE',
+                    dataType: 'JSON',
+                    data: {
+                        act: act,
+                        qty: qty
+                    },
+                    beforeSend : function () {
+                        $('#loader-wrapper').show();
+                    },
+                    complete: function() {
+                        $('#loader-wrapper').hide();
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        if (data.success) {
+                            Swal.fire("Sukses!", data.success, "success");
+                            location.reload();
+                        } else {
+                            Swal.fire("Peringatan!", data.info, "warning");
+                        }
+                        
+                    },
+                    error: function (response) {
+                        console.log(response);
+        
+                        var text = '';
+                    
+                        for (key in response.responseJSON.errors) {
+                            text += message(response.responseJSON.errors[key]);                    
+                        }
+                        
+                        Swal.fire(
+                            'Whoops ada Kesalahan',
+                            `Error : <br> ${text}`,
+                            'error'
+                        )
+                    }
+                });
+            } else {
+                Swal.fire("Batal !","Operasi rollback dibatalkan", "warning")
+            }
+        });
+
+    });
+
     //delete func
     $('#form').on('submit', function(e) {
         e.preventDefault();
@@ -154,7 +241,6 @@ $(document).ready(function () {
                         
                     },
                     error: function (response) {
-                        console.log(response);
         
                         var text = '';
                     

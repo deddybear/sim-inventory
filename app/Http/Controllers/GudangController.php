@@ -4,12 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
-use Ramsey\Uuid\Uuid as Generate;
 use App\Http\Controllers\HistoryController as HistoryC;
-use App\Models\History;
 use App\Models\Item;
 use App\Models\Type;
 use App\Models\Unit;
@@ -68,11 +65,9 @@ class GudangController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create(Request $req) {
-        date_default_timezone_set('Asia/Jakarta');     
-        $id = Generate::uuid4();
+        date_default_timezone_set('Asia/Jakarta');
 
         $data = array(
-            'id'    => $id,
             'types_id' => $req->type,
             'units_id' => $req->unit,
             'name'  => $req->name,
@@ -84,29 +79,29 @@ class GudangController extends Controller {
 
         try {
             
-            Item::create($data);    
+            $id = Item::insertGetId($data);
+            Item::where('id', $id)->update(['item_code' => $req->type . $id]); 
 
             HistoryC::create(
                 $id,
-               'add',
+               'buy',
                "Pembelian Bahan Baku",
                $req->qty,
             );
 
             return response()->json(['success' => 'Berhasil Menambahkan Data Bahan Baku']);
         } catch (\Throwable $th) {
-            return response()->json(['errors' => 'Internal Server Error'], 500);
+            return response()->json(['errors' => ['errors' => 'Internal Server Error']], 500);
         }
     }
 
-    public function addingStock($value, $id){
+    public function addingStock($value, $id) {
         try {
             date_default_timezone_set('Asia/Jakarta');
             $data = Item::where('id', $id)->first();
             $stockNew = $data->qty + $value;
             
             Item::where('id', $id)->update([
-                'date_entry' => Date('Y-m-d H:i:s'),
                 'qty' => $stockNew
             ]);
             
@@ -119,7 +114,7 @@ class GudangController extends Controller {
 
             return response()->json(['success' => 'Berhasil Menambahkan Stock Bahan Baku']);
         } catch (\Throwable $th) {
-            return response()->json(['errors' => 'Internal Server Error'], 500);
+             return response()->json(['errors' => ['errors' => 'Internal Server Error']], 500);
         }
     }
 
@@ -143,7 +138,7 @@ class GudangController extends Controller {
             );
             return response()->json(['success' => 'Berhasil Mengurangi Stock Bahan Baku']);
         } catch (\Throwable $th) {
-            return response()->json(['errors' => 'Internal Server Error'], 500);
+             return response()->json(['errors' => ['errors' => 'Internal Server Error']], 500);
         }
     }
 
@@ -154,7 +149,7 @@ class GudangController extends Controller {
 
             return response()->json(['success' => 'Berhasil Menghapus Data Gudang']);
         } catch (\Throwable $th) {
-            return response()->json(['errors' => 'Dimohon untuk menghapus Histori yang berkaitan dengan data tersebut'], 500);
+            return response()->json(['errors' => ['errors' => "Gagal Menghapus mohon dihapus terlebih dahulu data pada history"]], 500);
         }
     }
 }

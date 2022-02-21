@@ -2,9 +2,9 @@
 
 @section('title', 'Dashboard SIM - Inventory')
 @if (request()->is('dashboard/history/out'))
-    @section('title-header', 'Pengeluaran Bahan Baku Gudang')
+    @section('title-header', 'History Pengeluaran Bahan Baku Gudang')
 @else
-    @section('title-header', 'Pemasukan Bahan Baku Gudang')
+    @section('title-header', 'History Pemasukan Bahan Baku Gudang')
 @endif
 
 
@@ -44,7 +44,8 @@
                                 <th>Waktu</th>
                                 <th>Nama Bahan Baku</th>
                                 <th>Deskripsi</th>
-                                <th>Kuantitas</th>                                
+                                <th>Kuantitas</th>   
+                                <th>Aksi</th>                                 
                             </tr>
                         </thead>
                         <tbody>
@@ -69,12 +70,6 @@
                         @method('delete')
                         <div class="form-row">
                             <div class="form-group col-12 col-lg-3">
-                                <label for="tanggal">Tanggal</label>
-                                <div class="input-group">
-                                    <input name="day" type="number" min="1" max="32" class="form-control"/>
-                                </div>
-                            </div>
-                            <div class="form-group col-12 col-lg-3">
                                 <label for="bulan">Bulan</label>
                                 <div class="input-group" id="bulan" data-target-input="nearest">
                                     <input name="month" type="number" class="form-control datetimepicker-input" data-target="#bulan"/>
@@ -93,7 +88,7 @@
                                 </div>
                             </div>
                             <div class="form-group col-12 col-lg-3">
-                                <button type="submit" class="margin-button btn btn-danger">Hapus Periode Laporan</button>
+                                <button type="submit" class="margin-button btn btn-danger">Hapus Data Periode</button>
                             </div>
                         </div>
                     </form>

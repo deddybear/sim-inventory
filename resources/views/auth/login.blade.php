@@ -48,7 +48,7 @@
                   @enderror
                   <div class="d-block"> 
                       <div class="float-right">
-                        <a href="#" class="text-small">
+                        <a href="/password/reset" class="text-small">
                           Forgot Password?
                         </a>
                       </div>
