@@ -84,14 +84,21 @@ class HistoryController extends Controller {
 
         try {
             if ($req->act == 'buy') {
-                $dataHistory = History::find($id)->first();
+                $dataHistory = History::where('id', $id)
+                               ->where('act', $req->act)
+                               ->first();
                 $idItem      = $dataHistory->items_id;
                 $dataHistory->delete();
 
                 Item::find($idItem)->delete();
                 return response()->json(['success' => 'Berhasil, Merollback']);
+
             } else if ($req->act == 'add') {
-                $dataHistory = History::find($id)->first();
+
+                $dataHistory = History::where('id', $id)
+                               ->where('act', $req->act)
+                               ->first();
+
                 $idItem      = $dataHistory->items_id;
                 $dataHistory->delete();
 
@@ -103,7 +110,11 @@ class HistoryController extends Controller {
 
                 return response()->json(['success' => 'Berhasil, Merollback']);
             } else if ($req->act == 'red') {
-                $dataHistory = History::find($id)->first();
+
+                $dataHistory = History::where('id', $id)
+                               ->where('act', $req->act)
+                               ->first();
+
                 $idItem      = $dataHistory->items_id;
                 $dataHistory->delete();
 
