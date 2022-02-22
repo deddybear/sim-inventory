@@ -90,7 +90,8 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::prefix('laporan')->group(function () {
-        Route::post('/', [LaporanController::class, 'downloadLaporan']);
+        Route::get('/', [LaporanController::class, 'index']);
+        Route::post('/{params}', [LaporanController::class, 'download']);
     });
 
     Route::prefix('karyawan')->group(function () {

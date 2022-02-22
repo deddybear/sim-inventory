@@ -35,7 +35,7 @@
 @section('content')
 <div class="row justrify-content-center">
     <div class="col-12">
-        <div class="card">
+        <div class="card shadow-lg">
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-hover text-nowrap" id="dataTable">
@@ -61,7 +61,7 @@
             </div>
         </div>
  
-        <div class="card">
+        <div class="card shadow-lg">
             <div class="card-body">
                 <h5>Hapus Periode Data</h5>
                 <div class="mt-5">

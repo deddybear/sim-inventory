@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\History;
+use App\Models\Item;
 use Illuminate\Http\Request;
 
 class LaporanController extends Controller
@@ -11,21 +12,66 @@ class LaporanController extends Controller
         return view('laporan');
     }
 
-    public function downloadLaporan(Request $req) {
+    public function download($params, Request $req) {
 
-        if ($req->type === "bbkeluar") {
+        if ($params === "bbkeluar") {
             
-            $data = History::with('item:id,name')
+            $history = History::with('item:id,name')
                             ->where('act', 'red')
                             ->whereMonth('created_at', $req->month)
                             ->whereYear('created_at', $req->year)
                             ->orderBy('created_at', 'asc')
                             ->get();
 
-        } else if ($req->type === "bbmasuk") {
+            $totalCome = collect($history)->sum('qty');
 
-        } else if ($req->type === "bb") {
+            $data = array(
+                'histories' => $history,
+                'total' => $totalCome,
+                'title' => 'Bahan Baku Keluar'
+            );
 
+            return view('pdf/history', $data);
+
+        } else if ($params === "bbmasuk") {
+
+            $history = History::with('item:id,name')
+                            ->where('act', 'add')
+                            ->orWhere('act', 'buy')
+                            ->whereMonth('created_at', $req->month)
+                            ->whereYear('created_at', $req->year)
+                            ->orderBy('created_at', 'asc')
+                            ->get();
+
+            $totalCome = collect($history)->sum('qty');
+
+            $data = array(
+                'histories' => $history,
+                'total' => $totalCome,
+                'title' => 'Bahan Baku Masuk'
+            );
+
+            return view('pdf/history', $data);
+
+        } else if ($params === "bb") {
+
+            $items = Item::with('type:id,name', 'unit:id,name')
+                        ->whereMonth('date_entry', $req->month)
+                        ->whereYear('date_entry', $req->year)
+                        ->orderBy('date_entry', 'asc')
+                        ->get();
+
+            $totalExp = collect($items)->sum('total');
+
+            $data = array(
+                'items'     => $items,
+                'total_exp' => $totalExp
+            );
+
+            return view('pdf/items', $data);
+
+        } else {
+            return "404";
         }
         
     }

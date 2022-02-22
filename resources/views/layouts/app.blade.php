@@ -104,16 +104,10 @@
                                 </ul>
                             </li>
                             <li class="dropdown">
-                                <a class="nav-link has-dropdown" href="#">
+                                <a class="nav-link" href="/laporan">
                                     <i class="far fa-file-alt"></i> 
                                     <span>Laporan</span>
                                 </a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a class="nav-link" href="/">Bahan Baku</a>                                       
-                                        <a class="nav-link" href="/">Bahan Keluar</a>
-                                    </li>
-                                </ul>
                             </li>
                             @endif
                             @if (Auth::user()->roles == "1")                           

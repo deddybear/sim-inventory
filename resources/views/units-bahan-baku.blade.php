@@ -18,7 +18,7 @@
 @section('content')
 <div class="row justrify-content-center">
     <div class="col-12">
-        <div class="card">
+        <div class="card shadow-lg">
             <div class="card-body">
                 <div class="pull-right my-3" style="float: right">
                     <a id="add" href="#" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal_form">
