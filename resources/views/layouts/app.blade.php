@@ -60,91 +60,77 @@
                         </div>
                         <ul class="sidebar-menu">
                             <li class="menu-header">Dashboard</li>
-                            <li class="dropdown active">
-                                <a href="#" class="nav-link has-dropdown ">
+                            <li class="dropdown {{ (request()->is('dashboard')) ? 'active' : '' }}">
+                                <a href="/dashboard" class="nav-link">
                                     <i class="fas fa-fire"></i>
                                      <span>Dashboard</span>
                                 </a>
-                                <ul class="dropdown-menu">
-                                  <li class="active">
-                                      <a class="nav-link" href="/dashboard">General Dashboard</a>
-                                  </li>
-                                </ul>
                             </li>
                             @if (Auth::user()->roles == "2")
                             <li class="menu-header">Bahan Baku</li>
-                            <li class="dropdown">
+                            <li class="dropdown {{ request()->segment('2') == 'bahan-baku' ? 'active' : '' }}">
                                 <a href="#" class="nav-link has-dropdown">
                                     <i class="fas fa-boxes"></i>
                                      <span>Bahan Baku</span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                  <li>
-                                      <a class="nav-link" href="/dashboard/gudang">Manajemen Bahan Baku</a>      
-                                                                 
+                                  <li class="{{ request()->segment('3') == 'gudang' ? 'active' : '' }}">
+                                      <a class="nav-link" href="/dashboard/bahan-baku/gudang">Manajemen Bahan Baku</a>               
                                   </li>
-                                  <li>
-                                    <a class="nav-link" href="/dashboard/types">Jenis Bahan Baku</a>     
+                                  <li class="{{ request()->segment('3') == 'types' ? 'active' : '' }}">
+                                    <a class="nav-link" href="/dashboard/bahan-baku/types">Jenis Bahan Baku</a>     
                                   </li>
-                                  <li>
-                                    <a class="nav-link" href="/dashboard/units">Satuan Bahan Baku</a>     
+                                  <li class="{{ request()->segment('3') == 'units' ? 'active' : '' }}">
+                                    <a class="nav-link" href="/dashboard/bahan-baku/units">Satuan Bahan Baku</a>     
                                   </li>
                                 </ul>
                             </li>
-                            <li class="dropdown">
+                            <li class="dropdown {{ request()->segment('2') == 'history' ? 'active' : '' }}">
                                 <a href="#" class="nav-link has-dropdown">
                                     <i class="fas fa-history"></i>
                                      <span>History</span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                  <li>
-                                      <a class="nav-link" href="/dashboard/history/out">Bahan Baku (Keluar)</a>
-                                      <a class="nav-link" href="/dashboard/history/in">Bahan Baku (Masuk)</a>
+                                  <li class="{{ request()->segment('3') == 'out' ? 'active' : '' }}">
+                                      <a class="nav-link" href="/dashboard/history/out">Bahan Baku (Keluar)</a>                                      
+                                  </li>
+                                  <li class="{{ request()->segment('3') == 'in' ? 'active' : '' }}">
+                                    <a class="nav-link" href="/dashboard/history/in">Bahan Baku (Masuk)</a>
                                   </li>
                                 </ul>
                             </li>
-                            <li class="dropdown">
-                                <a class="nav-link" href="/laporan">
+                            @endif
+                            <li class="dropdown {{ request()->segment('2') == 'laporan' ? 'active' : '' }}">
+                                <a class="nav-link" href="/dashboard/laporan">
                                     <i class="far fa-file-alt"></i> 
                                     <span>Laporan</span>
                                 </a>
                             </li>
-                            @endif
-                            @if (Auth::user()->roles == "1")                           
-                            <li class="dropdown">
-                                <a class="nav-link has-dropdown" href="#">
-                                    <i class="far fa-file-alt"></i> 
-                                    <span>Laporan</span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a class="nav-link" href="/">Bahan Baku</a>
-                                        <a class="nav-link" href="/">Pembelian Bahan Keluar</a>
-                                        <a class="nav-link" href="/">Pengeluaran Bahan Keluar</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            @endif
                             <li class="menu-header">Akun Anda</li>
-                            <li class="dropdown">
+                            <li class="dropdown {{ request()->segment('2') == 'akun' ? 'active' : '' }}">
                                 <a href="#" class="nav-link has-dropdown">
                                     <i class="fas fa-chalkboard-teacher"></i>
                                      <span>Pengaturan Akun</span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                  <li>
-                                      @if (Auth::user()->roles == "1")
-                                        <a class="nav-link" href="/dashboard/karyawan">Pengelolah Akun Gudang</a>
-                                      @endif
+                                    @if (Auth::user()->roles == "1")
+                                        <li class="{{ request()->segment('3') == 'karyawan' ? 'active' : '' }}">
+                                            <a class="nav-link" href="/dashboard/akun/karyawan">Pengelolah Akun Gudang</a>
+                                        </li>
+                                    @endif
+
+                                  <li class="{{ request()->segment('3') == 'edit' ? 'active' : '' }}">                                   
                                       <a class="nav-link" href="/dashboard/akun/edit">Edit Akun</a>
-                                      <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault();
-                                      document.getElementById('logout-form').submit();">                  
-                                              <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                                  class="d-none">
-                                                  @csrf
-                                              </form>
-                                              Logout
-                                          </a>
+                                  </li>
+                                  <li>
+                                    <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault();
+                                    document.getElementById('logout-form').submit();">                  
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                                class="d-none">
+                                                @csrf
+                                            </form>
+                                            Logout
+                                        </a>
                                   </li>
                                 </ul>
                             </li>

@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ValidationLaporan;
 use App\Models\History;
 use App\Models\Item;
-use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class LaporanController extends Controller
 {
@@ -12,7 +13,7 @@ class LaporanController extends Controller
         return view('laporan');
     }
 
-    public function download($params, Request $req) {
+    public function download($params, ValidationLaporan $req) {
 
         if ($params === "bbkeluar") {
             
@@ -31,7 +32,8 @@ class LaporanController extends Controller
                 'title' => 'Bahan Baku Keluar'
             );
 
-            return view('pdf/history', $data);
+            $pdf = PDF::loadView('pdf.history', $data)->setPaper('A4', 'potrait');
+            return $pdf->stream();
 
         } else if ($params === "bbmasuk") {
 
@@ -51,7 +53,8 @@ class LaporanController extends Controller
                 'title' => 'Bahan Baku Masuk'
             );
 
-            return view('pdf/history', $data);
+            $pdf = PDF::loadView('pdf.history', $data)->setPaper('A4', 'potrait');
+            return $pdf->stream();
 
         } else if ($params === "bb") {
 
@@ -68,7 +71,8 @@ class LaporanController extends Controller
                 'total_exp' => $totalExp
             );
 
-            return view('pdf/items', $data);
+            $pdf = PDF::loadView('pdf.items', $data)->setPaper('A4', 'potrait');
+            return $pdf->stream();
 
         } else {
             return "404";

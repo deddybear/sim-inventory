@@ -227,36 +227,11 @@
                             <td>{{ $history->item->name }}</td>
                             <td>{{ $history->qty }}</td>
                             <td>{{ $history->descr }}</td>
-                            {{-- <td>Rp. {{ number_format($history->total, 0, ',', '.') }}</td> --}}
                         </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
-
-        {{-- <div class="my-5">
-            <p class="text-bold">Laporan Pengeluaran</p>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Tanggal & Waktu</th>
-                        <th>Nama</th>
-                        <th>Jumlah</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($exps as $exp)
-                        <tr>
-                            <td>{{ $exp->created_at }}</td>
-                            <td>{{ $exp->description }}</td>
-                            <td>{{ $exp->amount ." ".$exp->unit }}</td>
-                            <td>Rp. {{ number_format($exp->total, 0, ',', '.') }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div> --}}
 
         <div class="income border-solid">
             <p style="margin-block-start: .2em; margin-block-end: .2em">Total {{ $title }} : {{ $total }}</p>

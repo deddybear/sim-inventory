@@ -40,17 +40,26 @@ Route::middleware(['auth'])->group(function () {
     //view
     Route::prefix('dashboard')->group(function () {
         Route::get('/', [HomeController::class, 'index'])->name('home');
-        Route::get('/gudang', [GudangController::class, 'index']);
-        Route::get('/laporan', [LaporanController::class, 'index']);
-        Route::get('/history/out', [HistoryController::class, 'index']);
-        Route::get('/history/in', [HistoryController::class, 'index']);
-        Route::get('/types', [JenisBahanBakuController::class, 'index']);
-        Route::get('/units', [UnitsController::class, 'index']);
-        Route::get('/akun/edit', [UserController::class, 'pageEditAkun']);
 
-        Route::middleware(['divisi'])->group(function () {
-            Route::get('/karyawan', [UserController::class, 'index']);
+        Route::prefix('bahan-baku')->group(function () {
+            Route::get('/gudang', [GudangController::class, 'index']);
+            Route::get('/types', [JenisBahanBakuController::class, 'index']);
+            Route::get('/units', [UnitsController::class, 'index']);
         });
+
+        Route::prefix('history')->group(function () {
+            Route::get('/out', [HistoryController::class, 'index']);
+            Route::get('/in', [HistoryController::class, 'index']);
+        });
+        Route::get('/laporan', [LaporanController::class, 'index']);
+
+        Route::prefix('akun')->group(function () {
+            Route::get('/edit', [UserController::class, 'pageEditAkun']);
+            Route::middleware(['divisi'])->group(function () {
+                Route::get('/karyawan', [UserController::class, 'index']);
+            });
+        });
+
 
     });
 
@@ -90,7 +99,6 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::prefix('laporan')->group(function () {
-        Route::get('/', [LaporanController::class, 'index']);
         Route::post('/{params}', [LaporanController::class, 'download']);
     });
 

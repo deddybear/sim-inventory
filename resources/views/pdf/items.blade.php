@@ -202,75 +202,47 @@
             </tr>
         </table>
     </div>
-    <div class="container">
-        
-        
-        <div class="my-5">
+
+    <div class="my-5">
             
-        </div>
+    </div>
 
-        <div class="my-4">
-            <p class="text-bold">Laporan Bahan Baku</p>
-            <table class="table">
-                <thead>
+    <div class="my-4">
+        <p class="text-bold">Laporan Bahan Baku</p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Kode</th>                        
+                    <th>Nama</th>
+                    <th>Jenis</th>
+                    <th>Satuan</th>
+                    <th>Kuantitas</th>
+                    <th>Harga Satuan</th>
+                    <th>Total</th>
+                    <th>Waktu Masuk</th>
+                    <th>Waktu Terakhir Keluar</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($items as $item)
                     <tr>
-                        <th>Kode Bahan Baku</th>                        
-                        <th>Nama</th>
-                        <th>Jenis</th>
-                        <th>Satuan</th>
-                        <th>Kuantitas</th>
-                        <th>Harga Satuan</th>
-                        <th>Total</th>
-                        <th>Waktu Masuk</th>
-                        <th>Waktu Terakhir Keluar</th>
+                        <td>{{ $item->item_code }}</td>
+                        <td>{{ $item->name }}</td>
+                        <td>{{ $item->type->name }}</td>
+                        <td>{{ $item->unit->name }}</td>
+                        <td>{{ $item->qty }}</td>
+                        <td>Rp. {{ number_format($item->price, 0, ',', '.') }}</td>
+                        <td>Rp. {{ number_format($item->total, 0, ',', '.') }}</td>
+                        <td>{{ $item->date_entry }}</td>
+                        <td>{{ $item->date_out }}</td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach ($items as $item)
-                        <tr>
-                            <td>{{ $item->item_code }}</td>
-                            <td>{{ $item->name }}</td>
-                            <td>{{ $item->type->name }}</td>
-                            <td>{{ $item->unit->name }}</td>
-                            <td>{{ $item->qty }}</td>
-                            <td>Rp. {{ number_format($item->price, 0, ',', '.') }}</td>
-                            <td>Rp. {{ number_format($item->total, 0, ',', '.') }}</td>
-                            <td>{{ $item->date_entry }}</td>
-                            <td>{{ $item->date_out }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 
-        {{-- <div class="my-5">
-            <p class="text-bold">Laporan Pengeluaran</p>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Tanggal & Waktu</th>
-                        <th>Nama</th>
-                        <th>Jumlah</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($exps as $exp)
-                        <tr>
-                            <td>{{ $exp->created_at }}</td>
-                            <td>{{ $exp->description }}</td>
-                            <td>{{ $exp->amount ." ".$exp->unit }}</td>
-                            <td>Rp. {{ number_format($exp->total, 0, ',', '.') }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div> --}}
-
-        <div class="income border-solid">
-            <p style="margin-block-start: .2em; margin-block-end: .2em">Total Pembelian Bulan ini : Rp. {{ number_format($total_exp, 0, ',', '.') }}</p>
-        </div>
-
+    <div class="income border-solid">
+        <p style="margin-block-start: .2em; margin-block-end: .2em">Total Pembelian Bulan ini : Rp. {{ number_format($total_exp, 0, ',', '.') }}</p>
     </div>
 </body>
 </html>
