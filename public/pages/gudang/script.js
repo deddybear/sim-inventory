@@ -61,7 +61,15 @@ $(document).ready(function () {
             { data: "item_code", name: "item_code" },
             { data: "name", name: "name" },
             { data: "type.name", name: "type.name" },            
-            { data: "qty", name: "qty" },
+            { 
+                data: function (row) {
+                    if (row.qty == 0) {
+                        // toastr.warning(`Stock ${row.name} Kosong mohon untuk me-restock ulang`)
+                    }
+                    return row.qty; 
+                }, 
+                name: "qty" 
+            },
             { data: "unit.name", name: "unit.name"},
             { 
                 data: function (row) {
@@ -236,14 +244,6 @@ $(document).ready(function () {
 
     })
 
-    // DOM edit data func
-    $('tbody').on('click', '.edit', function() {
-        method = "PUT";
-        $('#form')[0].reset()
-        id = $(this).attr('data')
-        domModal('Edit Gudang Bahan Baku', 'Simpan Perubahan', 'Batalkan')
-        $('#modal_form').modal('show')
-    });
 
     //add | edit func
     $("#form").on("submit", function (e) {

@@ -172,6 +172,7 @@ $(document).ready(function () {
         let name = $(this).data('name');
         let act  = $(this).data('act');
         let qty =  $(this).data('qty');
+        let itemId = $(this).data('item');
 
         Swal.fire({
             title: `Apakah Ingin Merollback <br> ${desc} ${name} ? `,
@@ -190,7 +191,8 @@ $(document).ready(function () {
                     dataType: 'JSON',
                     data: {
                         act: act,
-                        qty: qty
+                        qty: qty,
+                        itemId: itemId,
                     },
                     beforeSend : function () {
                         $('#loader-wrapper').show();
@@ -209,7 +211,6 @@ $(document).ready(function () {
                         
                     },
                     error: function (response) {
-                        console.log(response);
         
                         var text = '';
                     
@@ -268,7 +269,6 @@ $(document).ready(function () {
                         
                     },
                     error: function (response) {
-                        console.log(response);
         
                         var text = '';
                     

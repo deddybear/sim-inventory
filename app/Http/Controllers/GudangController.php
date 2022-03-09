@@ -152,4 +152,38 @@ class GudangController extends Controller {
             return response()->json(['errors' => ['errors' => "Gagal Menghapus mohon dihapus terlebih dahulu data pada history"]], 500);
         }
     }
+
+    //rollback adding / reduce
+    public static function changedStockWithHistory($id, $act, $value) {
+        try {
+            $dataItem = Item::find($id);
+
+            if ($act == 'add') {
+                $dataItem->qty = $dataItem->qty - $value;
+                $dataItem->save();
+                return true;
+            } else if ($act == 'red') {
+                $dataItem->qty = $dataItem->qty + $value;
+                $dataItem->save();
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
+
+    //rollback buy
+    public static function deleteWithHistory($id){
+        
+        try {
+            Item::where('id', $id)->delete();
+            return true;
+        } catch (\Throwable $th) {
+            return false;
+        }
+        
+    }
 }

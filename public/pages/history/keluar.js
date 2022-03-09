@@ -144,7 +144,7 @@ $(document).ready(function () {
         let desc = $(this).data('desc');
         let name = $(this).data('name');
         let act  = $(this).data('act');
-        let qty =  $(this).data('qty');
+        let qty  = $(this).data('qty');
 
         Swal.fire({
             title: `Apakah Ingin Merollback <br> ${desc} ${name} ? `,
@@ -163,7 +163,7 @@ $(document).ready(function () {
                     dataType: 'JSON',
                     data: {
                         act: act,
-                        qty: qty
+                        qty: qty,
                     },
                     beforeSend : function () {
                         $('#loader-wrapper').show();

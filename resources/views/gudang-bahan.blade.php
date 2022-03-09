@@ -6,12 +6,13 @@
 @section('css')
 <link rel="stylesheet" href="{{ asset('/plugins/dataTables/datatables.css') }}">
 <link rel="stylesheet" href="{{ asset('/plugins/sweetalert2/sweetalert2.css') }}">
+<link rel="stylesheet" href="{{ asset('/plugins/toastr/toastr.css') }}">
 @endsection
 
 @section('script')
-<script src="{{ asset('/plugins/moment-with-locales.js') }}"></script>
 <script src="{{ asset('/plugins/sweetalert2/sweetalert2.js') }}"></script>
 <script src="{{ asset('/plugins/dataTables/datatables.js') }}"></script>
+<script src="{{ asset('/plugins/toastr/toastr.min.js') }}"></script>
 <script src="{{ asset('/pages/gudang/script.js') }}"></script>
 @endsection
 
@@ -164,6 +165,5 @@
         </div>
     </div>
 </div>
-
 
 @endsection

@@ -9,6 +9,7 @@ use Yajra\DataTables\Facades\DataTables;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Ramsey\Uuid\Uuid as Generate;
+use App\Http\Controllers\GudangController as Gudang;
 
 class HistoryController extends Controller {
     
@@ -43,7 +44,7 @@ class HistoryController extends Controller {
                                 return "<a href='javascript:;' class='btn btn-xs btn-success delete' 
                                 data='$data->id' data-desc='$data->descr' 
                                 data-act='$data->act' data-qty='$data->qty'
-                                data-name=".$data->item->name.">
+                                data-name=".$data->item->name." data-item=".$data->items_id.">
                                 <i class='fas fa-undo'></i>
                                 </a>";
                             })
@@ -84,49 +85,39 @@ class HistoryController extends Controller {
 
         try {
             if ($req->act == 'buy') {
-                $dataHistory = History::where('id', $id)
-                               ->where('act', $req->act)
-                               ->first();
-                $idItem      = $dataHistory->items_id;
-                $dataHistory->delete();
+                $dataHistory = History::where('items_id', $req->itemId)->get();
+ 
+                $dataCount = $dataHistory->count();
 
-                Item::find($idItem)->delete();
-                return response()->json(['success' => 'Berhasil, Merollback']);
-
-            } else if ($req->act == 'add') {
-
-                $dataHistory = History::where('id', $id)
-                               ->where('act', $req->act)
-                               ->first();
-
-                $idItem      = $dataHistory->items_id;
-                $dataHistory->delete();
-
-                $dataItem = Item::find($idItem)->first();
-                $stockNew = $dataItem->qty - $req->qty;
-                Item::find($idItem)->update([
-                    'qty' => $stockNew
-                ]);
-
-                return response()->json(['success' => 'Berhasil, Merollback']);
-            } else if ($req->act == 'red') {
+                if ($dataCount <= 1 && $dataHistory[0]->act == 'buy') {
+                    // History::where('id', $id)->delete();
+                    Gudang::deleteWithHistory($req->itemId);
+                    return response()->json(['success' => 'Berhasil Menghapus Data Gudang & History']);
+                } else {
+                    return response()->json(['errors' => ['errors' => "Gagal Menghapus mohon dihapus terlebih dahulu data pada history Keluar / Masuk"]], 500);
+                }                
+            } else if ($req->act == 'red' || $req->act == 'add') {
 
                 $dataHistory = History::where('id', $id)
                                ->where('act', $req->act)
                                ->first();
-
-                $idItem      = $dataHistory->items_id;
-                $dataHistory->delete();
-
-                $dataItem = Item::find($idItem)->first();
-                $stockNew = $dataItem->qty + $req->qty;
-                Item::find($idItem)->update([
-                    'qty' => $stockNew
-                ]);
-                return response()->json(['success' => 'Berhasil, Merollback']);
+                               
+                $result = Gudang::changedStockWithHistory(
+                    $dataHistory->items_id, 
+                    $req->act, 
+                    $req->qty
+                );
+                
+                if ($result) {
+                    $dataHistory->delete();
+                    return response()->json(['success' => 'Berhasil, Merollback']);
+                } else {
+                    return response()->json(['errors' => ['errors' => 'Gagal Merollback']], 500);
+                }
             } else {
                 return response()->json(['errors' => ['errors' => 'Type Aksi Tidak diketahui']], 500);
             }
+        
          
         } catch (\Throwable $th) {
             return response()->json(['errors' => ['errors' => 'Internal Server Error']], 500);
@@ -142,10 +133,11 @@ class HistoryController extends Controller {
         if ($req->year >= $yearNow) {
             return response()->json(['errors' => ['errors' => 'Periode Tahun Tidak Boleh Sama atau melebihi']], 400);
         }
-
+        
         try {
             DB::table('histories')
                 ->where('act', $params)
+                ->orWhere('act', 'buy')
                 ->whereMonth('created_at', $req->month)
                 ->whereYear('created_at', $req->year)
                 ->delete();
