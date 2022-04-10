@@ -15,13 +15,7 @@ $(document).ready(function () {
         'December'
     ];
 
-    const type = [
-        'Material',
-        'Paint',
-        'Utils',
-        'Technical',
-        'Soft'
-    ]
+    let type = [];
 
     const backgroundColor = () => [
         'rgba(255, 99, 132, 0.2)',
@@ -62,62 +56,149 @@ $(document).ready(function () {
         };
     }
 
+    $.ajax({
+        url: '/chart/pie/list',
+        method: 'GET',
+        dataType: 'JSON',
+        success: function(data) {
+            for (const key in data) {
+                type[key] = data[key].name;
+            }
 
-    const chartPemasukanBB = new Chart($('#pemasukanbb'), {
-        type: 'bar',
-        data : {
-            labels: MONTHS,
-            datasets: [
-                {
-                    label: 'Pemasukan Pada Gudang Bahan Baku',
-                    data: [65, 59, 80, 81, 56, 55, 40, 80, 81, 56, 55, 40],
-                    backgroundColor:  'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgb(75, 192, 192)',
-                }
-            ]
-        },
-        options: option('Grafik Pemasukan Bahan Baku'),
-    });
-
-    const chartPengeluaranBB = new Chart($('#pengeluaranbb'), {
-        type: 'bar',
-        data: {
-            labels: MONTHS,
-            datasets: [{
-                label: 'Pengeluaran Pada Gudang Bahan Baku',
-                data: [65, 59, 80, 81, 56, 55, 40, 80, 81, 56, 55, 40],
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgb(255, 99, 132)',
-            }]
-        },
-        option: option('Grafik Pemasukan Bahan Baku'),
+            console.log(type);
+        }
+        
     })
 
-    const chartPemasukanJenis = new Chart($('#pemasukanjenis'), {
-        type: 'pie',
-        data: {
-            labels:type,
-            datasets: [{
-                label: 'Jenis Pemasukan Bahan Baku',
-                data: [20, 59, 30, 81, 44],
-                backgroundColor: backgroundColor,
-                borderColor: borderColor,
-            }]
+
+    $.ajax({
+        url: `/chart/bar/${moment().format('YYYY')}/inc`,
+        method: `GET`,
+        dataType: 'JSON',
+        success: function(data) {
+
+            const chartPemasukanBB = new Chart($('#pemasukanbb'), {
+                type: 'bar',
+                data : {
+                    labels: MONTHS,
+                    datasets: [
+                        {
+                            label: 'Pemasukan Pada Gudang Bahan Baku',
+                            data: data,
+                            backgroundColor:  'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgb(75, 192, 192)',
+                        }
+                    ]
+                },
+                options: option('Grafik Pemasukan Bahan Baku'),
+            });
         },
-        option: option('Grafik Pemasukan Jenis Bahan Baku'),
+        error: function(res) {
+            
+            Swal.fire(
+                'Whoops ada Kesalahan',
+                `Error : <br> ${res.statusText}`,
+                'error'
+            )
+        }
     });
 
-    const chartPengeluaranJenis = new Chart($('#pengeluaranjenis'), {
-        type: 'pie',
-        data: {
-            labels:type,
-            datasets: [{
-                label: 'Jenis Pengeluaran Bahan Baku',
-                data: [20, 59, 30, 81, 44],
-                backgroundColor: backgroundColor,
-                borderColor: borderColor,
-            }]
+    $.ajax({
+        url: `/chart/bar/${moment().format('YYYY')}/out`,
+        method: `GET`,
+        dataType: 'JSON',
+        success: function(data) {
+            const chartPengeluaranBB = new Chart($('#pengeluaranbb'), {
+                type: 'bar',
+                data: {
+                    labels: MONTHS,
+                    datasets: [{
+                        label: 'Pengeluaran Pada Gudang Bahan Baku',
+                        data: data,
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgb(255, 99, 132)',
+                    }]
+                },
+                option: option('Grafik Pemasukan Bahan Baku'),
+            })
         },
-        option: option('Grafik Pengeluaran Jenis Bahan Baku'),
+        error: function(res) {
+            Swal.fire(
+                'Whoops ada Kesalahan',
+                `Error : <br> ${res.errors}`,
+                'error'
+            )
+        }
     });
+
+    $.ajax({
+        url: `/chart/pie/${moment().format('YYYY')}/inc`,
+        method: 'GET',
+        dataType: 'JSON',
+        success: function(data) {
+            console.log(data);
+            const chartPemasukanJenis = new Chart($('#pemasukanjenis'), {
+                type: 'pie',
+                data: {
+                    labels:type,
+                    datasets: [{
+                        label: 'Jenis Pemasukan Bahan Baku',
+                        data: data,
+                        backgroundColor: backgroundColor,
+                        borderColor: borderColor,
+                    }]
+                },
+                option: option('Grafik Pemasukan Jenis Bahan Baku'),
+            });
+        },
+        error: function(res) {
+            Swal.fire(
+                'Whoops ada Kesalahan',
+                `Error : <br> ${res.errors}`,
+                'error'
+            )
+        }
+    })
+
+    $.ajax({
+        url: `/chart/pie/${moment().format('YYYY')}/out`,
+        method: 'GET',
+        dataType: 'JSON',
+        success: function(data) {
+            const chartPemasukanJenis = new Chart($('#pengeluaranjenis'), {
+                type: 'pie',
+                data: {
+                    labels:type,
+                    datasets: [{
+                        label: 'Jenis Pemasukan Bahan Baku',
+                        data: data,
+                        backgroundColor: backgroundColor,
+                        borderColor: borderColor,
+                    }]
+                },
+                option: option('Grafik Pemasukan Jenis Bahan Baku'),
+            });
+        },
+        error: function(res) {
+            Swal.fire(
+                'Whoops ada Kesalahan',
+                `Error : <br> ${res.errors}`,
+                'error'
+            )
+        }
+    })
+
+    // const chartPengeluaranJenis = new Chart($('#pengeluaranjenis'), {
+    //     type: 'pie',
+    //     data: {
+    //         labels:type,
+    //         datasets: [{
+    //             label: 'Jenis Pengeluaran Bahan Baku',
+    //             data: data,
+    //             backgroundColor: backgroundColor,
+    //             borderColor: borderColor,
+    //         }]
+    //     },
+    //     option: option('Grafik Pengeluaran Jenis Bahan Baku'),
+    // });
 })

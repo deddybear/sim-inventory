@@ -9,6 +9,8 @@ $(document).ready(function () {
         'qty'
     ];
 
+    let validationQty = [];
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
@@ -64,7 +66,10 @@ $(document).ready(function () {
             { 
                 data: function (row) {
                     if (row.qty == 0) {
-                        // toastr.warning(`Stock ${row.name} Kosong mohon untuk me-restock ulang`)
+                        if (validationQty[row.DT_RowIndex] == null) {
+                            toastr.warning(`Stock ${row.name} Kosong mohon untuk me-restock ulang`)
+                        }
+                        validationQty[row.DT_RowIndex] = row.id;
                     }
                     return row.qty; 
                 }, 

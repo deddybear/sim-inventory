@@ -45,9 +45,6 @@ class GudangController extends Controller {
                                })                          
                                ->rawColumns(['Actions'])
                                ->toJson();
-
-
-        
     }
 
     public function search(Request $req) {

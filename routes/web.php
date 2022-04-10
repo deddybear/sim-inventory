@@ -110,5 +110,9 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/delete/{id}', [UserController::class, 'destroy']);
     });
 
-
+    Route::prefix('chart')->group(function () {
+        Route::get('/bar/{year}/{act}', [HomeController::class, 'dataBarIncomeOutcome']);
+        Route::get('/pie/{year}/{act}', [HomeController::class, 'dataPieIncomeOutcome']);
+        Route::get('/pie/list', [HomeController::class, 'listMaterial']);
+    });
 });
