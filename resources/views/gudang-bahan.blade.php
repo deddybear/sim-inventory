@@ -78,6 +78,7 @@
                                 <th>Jenis</th>
                                 <th>Kuantitas</th>
                                 <th>Satuan</th>
+                                <th>Rak</th>
                                 <th>Harga Satuan</th>
                                 <th>Total</th>
                                 <th>Waktu Terakhir Masuk</th>
@@ -87,6 +88,7 @@
                         <tbody>
                         </tbody>
                         <tfoot>
+                            <th></th>
                             <th></th>
                             <th></th>
                             <th></th>
