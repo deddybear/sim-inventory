@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\History;
+use App\Models\Item;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Models\Type;
@@ -113,7 +114,14 @@ class HomeController extends Controller {
         return $array;
     }
 
-    public function listMaterial(){
+    public function listMaterial() {
         return Type::select('name')->orderBy('types.id', 'desc')->get();
+    }
+
+    public function alertStockSpv() {
+        
+        $data = Item::select('name', 'qty')->where('qty', '<=', '0')->get();
+        return $data;
+        
     }
 }

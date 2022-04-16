@@ -26,7 +26,7 @@
                     <form id="form-update" data-id="{{ Auth::user()->id }}">
                         <input id="roles" type="hidden" class="form-control" name="roles" value="{{ Auth::user()->roles }}">
                         <div class="row mb-3">
-                            <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
+                            <label for="name" class="col-md-4 col-form-label text-md-end">Username</label>
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control" name="name" required>
                             </div>
@@ -55,7 +55,7 @@
 
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-success">
                                     {{ __('Perbarui Data Akun') }}
                                 </button>
                             </div>

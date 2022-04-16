@@ -28,6 +28,10 @@ class Item extends Model
         return $this->hasOne(Unit::class, 'id', 'units_id');
     }
 
+    public function cart(){
+        return $this->hasOne(Cart::class, 'id', 'cart_id');
+    }
+
     public function histories() {
         return $this->hasMany(History::class, 'items_id', 'id');
     }

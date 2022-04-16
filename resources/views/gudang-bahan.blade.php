@@ -13,7 +13,11 @@
 <script src="{{ asset('/plugins/sweetalert2/sweetalert2.js') }}"></script>
 <script src="{{ asset('/plugins/dataTables/datatables.js') }}"></script>
 <script src="{{ asset('/plugins/toastr/toastr.min.js') }}"></script>
-<script src="{{ asset('/pages/gudang/script.js') }}"></script>
+@if (Auth::user()->roles == '2')
+    <script src="{{ asset('/pages/gudang/script.js') }}"></script>
+@else
+    <script src="{{ asset('/pages/gudang/spv.js') }}"></script>
+@endif
 @endsection
 
 @section('content')
@@ -21,12 +25,15 @@
     <div class="col-12">
         <div class="card shadow-lg">
             <div class="card-body">
+                @if (Auth::user()->roles == '2')
                 <div class="pull-right my-3" style="float: right">
                     <a id="add" href="#" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal_form">
                         <span class="fa fa-plus"></span> Tambahkan Data
                     </a>
                 </div>
+                @endif
                 <div class="table-responsive">
+                    @if (Auth::user()->roles == '2')
                     <table class="table table-hover text-nowrap" id="dataTable">
                         <thead>
                             <tr>
@@ -59,6 +66,38 @@
                             <th></th>
                         </tfoot>
                     </table>
+                    @else
+                    <table class="table table-hover text-nowrap" id="dataTable">
+                        <thead>
+                            <tr>
+                                <th>No. </th>
+                                <th>Kode Bahan Baku</th>
+                                <th>Nama Bahan Baku</th>
+                                <th>Jenis</th>
+                                <th>Kuantitas</th>
+                                <th>Satuan</th>
+                                <th>Harga Satuan</th>
+                                <th>Total</th>
+                                <th>Waktu Terakhir Masuk</th>
+                                <th>Waktu Terakhir Keluar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th><input type="text" class="date text-sm form-control" placeholder="Search Date"></th>
+                            <th><input type="text" class="date text-sm form-control" placeholder="Search Date"></th>
+                        </tfoot>
+                    </table>
+                    @endif
                 </div>
             </div>
         </div>
@@ -158,7 +197,7 @@
                     </div>
                     <div class="modal-footer">
                         <button id="btn-cancel" type="button" class="btn btn-secondary" data-dismiss="modal"></button>
-                        <button id="btn-confrim" type="submit" class="btn btn-primary"></button>
+                        <button id="btn-confrim" type="submit" class="btn btn-success"></button>
                     </div>
                 </form>
             </div>

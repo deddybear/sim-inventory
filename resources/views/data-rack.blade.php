@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Dashboard SIM - Inventory')
-@section('title-header', 'Jenis Bahan Baku')
+@section('title-header', 'Data List Cart')
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('/plugins/dataTables/datatables.css') }}">
@@ -12,7 +12,7 @@
 <script src="{{ asset('/plugins/moment-with-locales.js') }}"></script>
 <script src="{{ asset('/plugins/sweetalert2/sweetalert2.js') }}"></script>
 <script src="{{ asset('/plugins/dataTables/datatables.js') }}"></script>
-<script src="{{ asset('/pages/jenis/script.js') }}"></script>
+<script src="{{ asset('/pages/rack/script.js') }}"></script>
 @endsection
 
 @section('content')
@@ -30,7 +30,6 @@
                         <thead>
                             <tr>
                                 <th>No. </th>
-                                <th>Kode Jenis</th>
                                 <th>Nama</th>
                                 <th>Dibuat Pada</th>
                                 <th>Diubah Pada</th>
@@ -67,21 +66,12 @@
                 <form class="form-horizontal" id="form">
                     <div class="form-body p-3">
 
-                        {{-- Jenis Bahan Baku --}}
+                        {{-- Satuan Bahan Baku --}}
                         <div class="form-group">
-                            <label class="control-label col-md-5">Kode Jenis</label>
-                            <div class="col-md-12">
-                                <input type="text" class="form-control" name="id" id="id"
-                                    placeholder="Kode Jenis" required>
-                            </div>
-                        </div>
-
-                        {{-- Jenis Bahan Baku --}}
-                        <div class="form-group">
-                            <label class="control-label col-md-5">Nama Jenis Bahan Baku</label>
+                            <label class="control-label col-md-5">Nama Rak</label>
                             <div class="col-md-12">
                                 <input type="text" class="form-control" name="name" id="name"
-                                    placeholder="Jenis Bahan Baku" required>
+                                    placeholder="Nama Rak" required>
                             </div>
                         </div>
 
@@ -95,6 +85,4 @@
         </div>
     </div>
 </div>
-
-
 @endsection

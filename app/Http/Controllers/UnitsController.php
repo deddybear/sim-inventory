@@ -55,9 +55,8 @@ class UnitsController extends Controller {
             'name' => $req->name,
         );
 
-        Unit::create($data);
-        try {
-            
+        try {     
+            Unit::create($data);
             return response()->json(['success' => 'Berhasil Menambahkan Data Jenis Bahan Baku']);
         } catch (\Throwable $th) {
             return response()->json(['errors' => ['errors' => 'Internal Server Error']], 500);

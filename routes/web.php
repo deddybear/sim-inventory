@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JenisBahanBakuController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\RackController;
 use App\Http\Controllers\UnitsController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -45,6 +46,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/gudang', [GudangController::class, 'index']);
             Route::get('/types', [JenisBahanBakuController::class, 'index']);
             Route::get('/units', [UnitsController::class, 'index']);
+            Route::get('/rack', [RackController::class, 'index'])->name('rack');
         });
 
         Route::prefix('history')->group(function () {
@@ -90,6 +92,14 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/delete/{id}', [UnitsController::class, 'destroy']);
     });
 
+    Route::prefix('rack')->group(function () {
+        Route::get('/data', [RackController::class, 'data']);
+        Route::get('/search', [RackController::class, 'search']);
+        Route::post('/create', [RackController::class, 'create']);
+        Route::put('/update/{id}', [RackController::class, 'update']);
+        Route::delete('/delete/{id}', [RackController::class, 'destroy']);
+    });
+
     Route::prefix('history')->group(function () {
         Route::get('/data/{params}', [HistoryController::class, 'data']);
         Route::get('/search', [HistoryController::class, 'search']);
@@ -115,4 +125,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/pie/{year}/{act}', [HomeController::class, 'dataPieIncomeOutcome']);
         Route::get('/pie/list', [HomeController::class, 'listMaterial']);
     });
+
+    Route::get('/stock-kosong', [HomeController::class, 'alertStockSpv']);
 });

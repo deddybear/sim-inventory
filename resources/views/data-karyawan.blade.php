@@ -124,7 +124,7 @@
                     </div>
                     <div class="modal-footer">
                         <button id="btn-cancel" type="button" class="btn btn-secondary" data-dismiss="modal"></button>
-                        <button id="btn-confrim" type="submit" class="btn btn-primary"></button>
+                        <button id="btn-confrim" type="submit" class="btn btn-success"></button>
                     </div>
                 </form>
             </div>

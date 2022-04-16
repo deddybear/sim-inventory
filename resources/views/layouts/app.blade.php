@@ -25,6 +25,17 @@
     <link rel="stylesheet" href="{{ asset('/plugins/sweetalert2/sweetalert2.css') }}">
     <link rel="stylesheet" href="{{ asset('/plugins/loader.min.css') }}">
 
+    <style>
+        .navbar-bg {
+            background-color: #20c997 !important;
+        }
+
+        hr.lineCustom {
+            border: 10px solid #20c997 !important;
+            border-radius: 5px !important;
+        }
+    </style>
+
     @yield('css')
 </head>
 
@@ -83,6 +94,9 @@
                                   <li class="{{ request()->segment('3') == 'units' ? 'active' : '' }}">
                                     <a class="nav-link" href="/dashboard/bahan-baku/units">Satuan Bahan Baku</a>     
                                   </li>
+                                  <li class="{{ request()->segment('3') == 'rack' ? 'active' : '' }}">
+                                    <a class="nav-link" href="/dashboard/bahan-baku/rack">List Data Rack</a>     
+                                  </li>
                                 </ul>
                             </li>
                             <li class="dropdown {{ request()->segment('2') == 'history' ? 'active' : '' }}">
@@ -98,6 +112,14 @@
                                     <a class="nav-link" href="/dashboard/history/in">Bahan Baku (Masuk)</a>
                                   </li>
                                 </ul>
+                            </li>
+                            @endif
+                            @if (Auth::user()->roles == "1")
+                            <li class="dropdown {{ request()->segment('3') == 'gudang' ? 'active' : '' }}">
+                                <a class="nav-link" href="/dashboard/bahan-baku/gudang">
+                                    <i class="fas fa-boxes"></i> 
+                                    <span>Bahan Baku</span>
+                                </a>
                             </li>
                             @endif
                             <li class="dropdown {{ request()->segment('2') == 'laporan' ? 'active' : '' }}">

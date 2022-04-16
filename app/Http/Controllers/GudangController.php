@@ -10,6 +10,7 @@ use App\Http\Controllers\HistoryController as HistoryC;
 use App\Models\Item;
 use App\Models\Type;
 use App\Models\Unit;
+use Illuminate\Support\Facades\Auth;
 
 class GudangController extends Controller {
     
@@ -23,28 +24,50 @@ class GudangController extends Controller {
 
     public function data() {
         $data = Item::with('type:id,name', 'unit:id,name')->orderBy('date_entry', 'desc');
-        return DataTables::eloquent($data)
-                               ->addIndexColumn()
-                               ->editColumn('date_entry', function ($data) {
-                                 return Carbon::createFromFormat('Y-m-d H:i:s', $data->date_entry, 'Asia/Jakarta')
-                                                ->format('Y-m-d H:i:s');
-                                 })
-                               ->editColumn('date_out', function ($data) {
-                                     if(!empty($data->date_out)){
-                                         return Carbon::createFromFormat('Y-m-d H:i:s', $data->date_out, 'Asia/Jakarta')
-                                         ->format('Y-m-d H:i:s');
-                                     }
-                                 
-                                     return ' - ';
-                               })
-                               ->addColumn('Actions', function($data){
-                                 return '<a href="javascript:;" class="btn btn-xs btn-info adding" data="'.$data->id.'"><i class="fas fa-plus"></i></a>
-                                 <a href="javascript:;" class="btn btn-xs btn-warning reduce" data="'.$data->id.'"><i class="fas fa-minus"></i></a>
-                                 <a href="javascript:;" class="btn btn-xs btn-danger delete" data="'.$data->id.'"><i class="far fa-trash-alt"></i></a>
-                                 ';
-                               })                          
-                               ->rawColumns(['Actions'])
-                               ->toJson();
+        
+        if (Auth::user()->roles == '2') {
+            return DataTables::eloquent($data)
+                    ->addIndexColumn()
+                    ->editColumn('date_entry', function ($data) {
+                      return Carbon::createFromFormat('Y-m-d H:i:s', $data->date_entry, 'Asia/Jakarta')
+                                     ->format('Y-m-d H:i:s');
+                      })
+                    ->editColumn('date_out', function ($data) {
+                          if(!empty($data->date_out)){
+                              return Carbon::createFromFormat('Y-m-d H:i:s', $data->date_out, 'Asia/Jakarta')
+                              ->format('Y-m-d H:i:s');
+                          }
+                      
+                          return ' - ';
+                    })
+                    ->addColumn('Actions', function($data) {
+                         return '<a href="javascript:;" class="btn btn-xs btn-info adding" data="'.$data->id.'"><i class="fas fa-plus"></i></a>
+                         <a href="javascript:;" class="btn btn-xs btn-warning reduce" data="'.$data->id.'"><i class="fas fa-minus"></i></a>
+                         <a href="javascript:;" class="btn btn-xs btn-danger delete" data="'.$data->id.'"><i class="far fa-trash-alt"></i></a>
+                         ';
+                    })                          
+                    ->rawColumns(['Actions'])
+                    ->toJson();                 
+        } else {
+            return DataTables::eloquent($data)
+                   ->addIndexColumn()
+                   ->editColumn('date_entry', function ($data) {
+                     return Carbon::createFromFormat('Y-m-d H:i:s', $data->date_entry, 'Asia/Jakarta')
+                                    ->format('Y-m-d H:i:s');
+                     })
+                   ->editColumn('date_out', function ($data) {
+                         if(!empty($data->date_out)){
+                             return Carbon::createFromFormat('Y-m-d H:i:s', $data->date_out, 'Asia/Jakarta')
+                             ->format('Y-m-d H:i:s');
+                         }
+                       
+                         return ' - ';
+                   })
+                   ->rawColumns(['Actions'])
+                   ->toJson();     
+        }
+        
+
     }
 
     public function search(Request $req) {

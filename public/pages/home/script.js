@@ -65,7 +65,13 @@ $(document).ready(function () {
                 type[key] = data[key].name;
             }
 
-            console.log(type);
+        },
+        error: function() {
+            Swal.fire(
+                'Whoops ada Kesalahan Pada Fetch list item',
+                `Error : Internal Server Error`,
+                'error'
+            )
         }
         
     })
@@ -136,7 +142,7 @@ $(document).ready(function () {
         method: 'GET',
         dataType: 'JSON',
         success: function(data) {
-            console.log(data);
+
             const chartPemasukanJenis = new Chart($('#pemasukanjenis'), {
                 type: 'pie',
                 data: {
