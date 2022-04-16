@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Controllers\HistoryController as HistoryC;
 use App\Models\Item;
+use App\Models\Rack;
 use App\Models\Type;
 use App\Models\Unit;
 use Illuminate\Support\Facades\Auth;
@@ -18,12 +19,13 @@ class GudangController extends Controller {
     public function index() {
         $listType = Type::select('id', 'name')->orderBy('created_at', 'desc')->get();
         $listUnit = Unit::select('id', 'name')->orderBy('created_at', 'desc')->get();
+        $listRack = Rack::select('id', 'name')->orderBy('created_at', 'desc')->get();
 
-        return view('gudang-bahan', compact('listType', 'listUnit'));
+        return view('gudang-bahan', compact('listType', 'listUnit', 'listRack'));
     }
 
     public function data() {
-        $data = Item::with('type:id,name', 'unit:id,name')->orderBy('date_entry', 'desc');
+        $data = Item::with('type:id,name', 'unit:id,name', 'rack:id,name')->orderBy('date_entry', 'desc');
         
         if (Auth::user()->roles == '2') {
             return DataTables::eloquent($data)
@@ -90,6 +92,7 @@ class GudangController extends Controller {
         $data = array(
             'types_id' => $req->type,
             'units_id' => $req->unit,
+            'rack_id' => $req->rak,
             'name'  => $req->name,
             'qty'   => $req->qty,
             'price' => $req->price,

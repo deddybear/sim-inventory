@@ -35,6 +35,7 @@ $(document).ready(function () {
                 name: "qty" 
             },
             { data: "unit.name", name: "unit.name"},
+            {data: "rack.name", name: "rack.name"},
             { 
                 data: function (row) {
                     return idrFormatter.format(row.price);

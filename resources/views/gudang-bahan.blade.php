@@ -43,6 +43,7 @@
                                 <th>Jenis</th>
                                 <th>Kuantitas</th>
                                 <th>Satuan</th>
+                                <th>Rak</th>
                                 <th>Harga Satuan</th>
                                 <th>Total</th>
                                 <th>Waktu Terakhir Masuk</th>
@@ -53,6 +54,7 @@
                         <tbody>
                         </tbody>
                         <tfoot>
+                            <th></th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -148,7 +150,7 @@
                                 </select>
                                 <div class="d-block"> 
                                     <div class="float-right">
-                                      <a href="/dashboard/types" class="text-small">
+                                      <a href="/dashboard/bahan-baku/types" class="text-small">
                                         Ingin Menambahkan Jenis Bahan Baku ?
                                       </a>
                                     </div>
@@ -168,8 +170,28 @@
                                 </select>
                                 <div class="d-block"> 
                                     <div class="float-right">
-                                      <a href="/dashboard/units" class="text-small">
+                                      <a href="/dashboard/bahan-baku/units" class="text-small">
                                         Ingin Menambahkan Satuan ?
+                                      </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Satuan --}}
+                        <div class="form-group">
+                            <label class="control-label col-md-5">Tipe Rak</label>
+                            <div class="col-md-12">
+                                <select id="list-unit" class="form-control" name="rak" required>
+                                    <option value="" selected>Silahkan Dipilih</option>
+                                    @foreach ($listRack as $item)
+                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="d-block"> 
+                                    <div class="float-right">
+                                      <a href="/dashboard/bahan-baku/rack" class="text-small">
+                                        Ingin Menambahkan Rak ?
                                       </a>
                                     </div>
                                 </div>
