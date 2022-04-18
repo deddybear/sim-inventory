@@ -87,7 +87,7 @@
 
                         {{-- Nama Akun --}}
                         <div class="form-group">
-                            <label class="control-label col-md-5">Nama</label>
+                            <label class="control-label col-md-5">Username</label>
                             <div class="col-md-12">
                                 <input type="text" class="form-control" name="name" id="name"
                                     placeholder="Nama" required>
@@ -105,7 +105,7 @@
 
                         {{-- Konfrimasi Password --}}
                         <div class="form-group">
-                            <label class="control-label col-md-5">Password</label>
+                            <label class="control-label col-md-5">Password Konfrimasi</label>
                             <div class="col-md-12">
                                 <input type="password" class="form-control" name="password_confirmation" id="password-confirm" 
                                     placeholder="Password" required>

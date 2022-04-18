@@ -123,9 +123,11 @@ class GudangController extends Controller {
             date_default_timezone_set('Asia/Jakarta');
             $data = Item::where('id', $id)->first();
             $stockNew = $data->qty + $value;
+            $totalNew = $stockNew * $data->price;
             
             Item::where('id', $id)->update([
-                'qty' => $stockNew
+                'qty' => $stockNew,
+                'total' => $totalNew
             ]);
             
             HistoryC::create(
@@ -147,10 +149,12 @@ class GudangController extends Controller {
             date_default_timezone_set('Asia/Jakarta');
             $data = Item::where('id', $id)->first();
             $stockNew = $data->qty - $value;
-
+            $totalNew = $stockNew * $data->price;
+            
             DB::table('items')->where('id', $id)->update([
                 'date_out' => Date('Y-m-d H:i:s'),
-                'qty' => $stockNew
+                'qty' => $stockNew,
+                'total' => $totalNew
             ]);
 
             HistoryC::create(

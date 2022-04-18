@@ -12,6 +12,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Item;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +36,6 @@ Route::get('/', function (){
 Route::get('/password', function (){
     return redirect('/dashboard');
 });
-
 
 Route::middleware(['auth'])->group(function () {
     //view

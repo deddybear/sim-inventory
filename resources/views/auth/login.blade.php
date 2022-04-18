@@ -30,9 +30,13 @@
       <div class="col-5 mx-auto">
         <div class="login-brand">
             <img src="{{ asset('/images/logo.png') }}" alt="logo" width="100" class="shadow-light rounded-circle">
-            <div class="text-dark text-center mt-3">Menu Login</div>
-            <div class="text-dark text-center font-weight-bold">Sistem Informasi Manajemen Gudang</div>
-            <div class="text-dark text-center font-weight-bold">PT. Multi Garmen Jaya</div>
+            <div class="card mt-4">
+              <div class="card-body">
+                <div class="text-dark text-center mt-3">Menu Login</div>
+                <div class="text-dark text-center font-weight-bold">Sistem Informasi Manajemen Gudang</div>
+                <div class="text-dark text-center font-weight-bold">PT. Multi Garmen Jaya</div>
+              </div>
+            </div>
         </div>
           <div class="card shadow-lg">
             <div class="card-body">
