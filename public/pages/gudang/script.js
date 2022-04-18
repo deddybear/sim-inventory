@@ -2,6 +2,7 @@ $(document).ready(function () {
     moment.locale("id");
     let method;
     let id;
+    let isProses = false ;
 
     let column = [
         'name',
@@ -256,7 +257,6 @@ $(document).ready(function () {
         e.preventDefault();
         var url;
 
-        console.log(`submit ${method}`);
         if (method == "POST") {
             url = "/gudang/create";
         } else if (method == "PUT") {

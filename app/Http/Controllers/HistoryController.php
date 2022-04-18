@@ -90,7 +90,7 @@ class HistoryController extends Controller {
                 $dataCount = $dataHistory->count();
 
                 if ($dataCount <= 1 && $dataHistory[0]->act == 'buy') {
-                    // History::where('id', $id)->delete();
+                    History::where('id', $id)->delete();
                     Gudang::deleteWithHistory($req->itemId);
                     return response()->json(['success' => 'Berhasil Menghapus Data Gudang & History']);
                 } else {
