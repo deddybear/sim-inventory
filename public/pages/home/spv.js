@@ -5,18 +5,20 @@ $(document).ready(function () {
         method: 'GET',
         dataType: 'JSON',
         success: function(data) {
-            let html = '';
-            $.each(data, function (index, row) {
 
-                html += `<li>${row.name}</li>`
-            })
+            if (data.length > 0) {
+                let html = '';
+                $.each(data, function (index, row) {
 
-            Swal.fire(
-                'Peringatan Stock !',
-                `Stock Bahan Baku ${html} <br> Mohon untuk Memesan Kembali`,
-                'warning'
-            )
-            // data.forEach(announcement);
+                    html += `<li>${row.name}</li>`
+                })
+
+                Swal.fire(
+                    'Peringatan Stock !',
+                    `Stock Bahan Baku ${html} <br> Mohon untuk Memesan Kembali`,
+                    'warning'
+                )
+            }
         },
         error: function() {
             Swal.fire(
