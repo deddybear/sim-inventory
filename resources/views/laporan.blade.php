@@ -57,12 +57,12 @@
                     @endif
                     <div class="card shadow-none">
                         <div class="card-header">
-                            <h4>Bahan Baku</h4>
+                            <h4>Bahan Baku (Masuk)</h4>
                         </div>
                         <div class="card-body">
                             <p>Laporan ini otomatis generate sesuai dengan Data Bahan Baku.</p>
                             <div class="mt-5">
-                                <form action="/laporan/bb" method="POST" target="_blank">
+                                <form action="/laporan/bbmasuk" method="POST" target="_blank">
                                     @csrf
                                     <div class="form-row">
                                         <div class="form-group col-12 col-lg-4">
