@@ -39,6 +39,7 @@ class LaporanController extends Controller
             $pdf = PDF::loadView('pdf.history', $data)->setPaper('A4', 'potrait');
             return $pdf->stream();
 
+
         } else if ($params === "bbmasuk") {
 
             $history = History::with('item:id,name,price')
