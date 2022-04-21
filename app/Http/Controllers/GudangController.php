@@ -45,6 +45,7 @@ class GudangController extends Controller {
                     ->addColumn('Actions', function($data) {
                          return '<a href="javascript:;" class="btn btn-xs btn-info adding" data="'.$data->id.'"><i class="fas fa-plus"></i></a>
                          <a href="javascript:;" class="btn btn-xs btn-warning reduce" data="'.$data->id.'"><i class="fas fa-minus"></i></a>
+                         <a href="javascript:;" class="btn btn-xs btn-secondary edit" data="'.$data->id.'"><i class="far fa-edit"></i></a>
                          <a href="javascript:;" class="btn btn-xs btn-danger delete" data="'.$data->id.'"><i class="far fa-trash-alt"></i></a>
                          ';
                     })                          
@@ -110,6 +111,8 @@ class GudangController extends Controller {
                'buy',
                "Pembelian Bahan Baku",
                $req->qty,
+               $req->price,
+               $req->qty * $req->price
             );
 
             return response()->json(['success' => 'Berhasil Menambahkan Data Bahan Baku']);
@@ -118,7 +121,31 @@ class GudangController extends Controller {
         }
     }
 
+    public function update($id, Request $req) {
+        date_default_timezone_set('Asia/Jakarta');
+        
+        try {
+            $qty = Item::select('qty')->where('id', $id)->first();
+
+            $data = array(
+                'types_id' => $req->type,
+                'item_code' => $req->type . $id,
+                'units_id' => $req->unit,
+                'rack_id' => $req->rak,
+                'name'  => $req->name,
+                'price' => $req->price,
+                'total' => $qty->qty * $req->price
+            );
+            
+            Item::where('id', $id)->update($data);
+            return response()->json(['success' => 'Berhasil Update Data Bahan Baku']);
+        } catch (\Throwable $th) {
+            return response()->json(['errors' => ['errors' => 'Internal Server Error']], 500);
+        }
+    }
+
     public function addingStock($value, $id) {
+        //value = qty
         try {
             date_default_timezone_set('Asia/Jakarta');
             $data = Item::where('id', $id)->first();
@@ -134,7 +161,9 @@ class GudangController extends Controller {
                 $id,
                 'add', 
                 "Penambahan Stock",
-                $value
+                $value,
+                $data->price,
+                $stockNew * $data->price
             );
 
             return response()->json(['success' => 'Berhasil Menambahkan Stock Bahan Baku']);
@@ -145,6 +174,7 @@ class GudangController extends Controller {
 
 
     public function reduceStock($value, $id){
+        //value = qty
         try {
             date_default_timezone_set('Asia/Jakarta');
             $data = Item::where('id', $id)->first();
@@ -161,7 +191,9 @@ class GudangController extends Controller {
                 $id,
                 'red', 
                 "Pengurangan Stock", 
-                $value
+                $value,
+                $data->price,
+                $stockNew * $data->price
             );
             return response()->json(['success' => 'Berhasil Mengurangi Stock Bahan Baku']);
         } catch (\Throwable $th) {
@@ -186,11 +218,15 @@ class GudangController extends Controller {
             $dataItem = Item::find($id);
 
             if ($act == 'add') {
-                $dataItem->qty = $dataItem->qty - $value;
+                $qtyNew = $dataItem->qty - $value;
+                $dataItem->qty = $qtyNew;
+                $dataItem->total = $qtyNew * $dataItem->price;
                 $dataItem->save();
                 return true;
             } else if ($act == 'red') {
-                $dataItem->qty = $dataItem->qty + $value;
+                $qtyNew = $dataItem->qty + $value;
+                $dataItem->qty = $qtyNew;
+                $dataItem->total = $qtyNew * $dataItem->price;
                 $dataItem->save();
                 return true;
             } else {

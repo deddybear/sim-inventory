@@ -18,6 +18,7 @@ class CreateHistory extends Migration
             $table->string('name', 150);
             $table->string('type', 20);
             $table->unsignedInteger('qty');
+            $table->unsignedInteger('total');
             $table->timestamp('date_time');
         });
     }

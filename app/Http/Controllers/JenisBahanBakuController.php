@@ -84,7 +84,7 @@ class JenisBahanBakuController extends Controller {
             Type::where('id', $id)->delete();
             return response()->json(['success' => 'Berhasil Menghapus Data Jenis Bahan Haku']);
         } catch (\Throwable $th) {
-            return response()->json(['errors' => ['errors' => 'Internal Server Error']], 500);
+            return response()->json(['errors' => ['errors' => $th->errorInfo[2]]], 500);
         }
     }
 }

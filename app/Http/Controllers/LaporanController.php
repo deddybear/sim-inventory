@@ -17,27 +17,31 @@ class LaporanController extends Controller
 
         if ($params === "bbkeluar") {
             
-            $history = History::with('item:id,name')
+            $history = History::with('item:id,name,price')
                             ->where('act', 'red')
                             ->whereMonth('created_at', $req->month)
                             ->whereYear('created_at', $req->year)
                             ->orderBy('created_at', 'asc')
                             ->get();
 
-            $totalCome = collect($history)->sum('qty');
-
+            $totalQty = collect($history)->sum('qty');
+            $totalCost = collect($history)->sum('total');
+          
             $data = array(
                 'histories' => $history,
-                'total' => $totalCome,
-                'title' => 'Bahan Baku Keluar'
+                'total_qty' => $totalQty,
+                'total_price' => $totalCost,
+                'title' => 'Bahan Baku Keluar',
+                'status' => 'Pemasukan'
             );
 
+      
             $pdf = PDF::loadView('pdf.history', $data)->setPaper('A4', 'potrait');
             return $pdf->stream();
 
         } else if ($params === "bbmasuk") {
 
-            $history = History::with('item:id,name')
+            $history = History::with('item:id,name,price')
                             ->where('act', 'add')
                             ->orWhere('act', 'buy')
                             ->whereMonth('created_at', $req->month)
@@ -45,14 +49,18 @@ class LaporanController extends Controller
                             ->orderBy('created_at', 'asc')
                             ->get();
 
-            $totalCome = collect($history)->sum('qty');
+            $totalQty = collect($history)->sum('qty');
+            $totalCost = collect($history)->sum('total');
 
             $data = array(
                 'histories' => $history,
-                'total' => $totalCome,
-                'title' => 'Bahan Baku Masuk'
+                'total_qty' => $totalQty,
+                'total_price' => $totalCost,
+                'title' => 'Bahan Baku Masuk',
+                'status' => 'Pembelian'
             );
 
+    
             $pdf = PDF::loadView('pdf.history', $data)->setPaper('A4', 'potrait');
             return $pdf->stream();
 

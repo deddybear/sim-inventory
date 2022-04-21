@@ -108,7 +108,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal_form" tabindex="1050"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal_form" tabindex="1050" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document" style="max-width: 500px !important">
         <div class="modal-content">
             <div class="modal-header">
@@ -201,7 +201,7 @@
                         </div>
 
                         {{-- Kuantitas --}}
-                        <div class="form-group">
+                        <div class="form-group" id="qty-form">
                             <label class="control-label col-md-5">Kuantitas</label>
                             <div class="col-md-12">
                                 <input type="number" class="form-control" name="qty" id="qty" min="1"

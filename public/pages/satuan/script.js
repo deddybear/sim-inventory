@@ -13,6 +13,19 @@ $(document).ready(function() {
         }
     });
 
+    let message = messageErrors => {
+        var temp = '';
+        if (messageErrors instanceof Array) {
+                messageErrors.forEach(element => {
+                    temp += `${element} <br>`
+                });
+                return temp;
+        } else {
+            return messageErrors ? `${messageErrors} <br>` : ' '
+        }
+       
+    }
+
     function domModal(textTitle, textConfrim, textClose) {
         $('.modal-title').html(textTitle)
         $('#btn-confrim').html(textConfrim)
@@ -204,11 +217,17 @@ $(document).ready(function() {
                         Swal.fire("Deleted!", response.success, "success");
                         location.reload();
                     },
-                    error: function (response) {
-                        console.log(response);
+                    error: function (res) {
+                        console.log(res);
+                        let text = ''; 
+
+                        for (const key in res.responseJSON.errors) {
+                            text += message(res.responseJSON.errors[key]); 
+                        }
+
                         Swal.fire(
                             'Whoops ada Kesalahan',
-                            `Error : ${response.errors}`,
+                            `Error : ${text}`,
                             'error'
                         )
                     }

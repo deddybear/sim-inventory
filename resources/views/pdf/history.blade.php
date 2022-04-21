@@ -217,7 +217,10 @@
                         <th>Tanggal & Waktu</th>
                         <th>Nama</th>
                         <th>Kuantitas</th>
+                        <th>Histori Harga Satuan </th>
+                        <th>Harga Total</th>
                         <th>Deskripsi</th>
+                        <th>Harga Satuan Saat ini</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -226,7 +229,10 @@
                             <td>{{ $history->created_at }}</td>
                             <td>{{ $history->item->name }}</td>
                             <td>{{ $history->qty }}</td>
+                            <td>Rp. {{ number_format($history->price, 0, ',', '.') }}</td>
+                            <td>Rp. {{ number_format($history->total, 0, ',', '.') }}</td>
                             <td>{{ $history->descr }}</td>
+                            <td>Rp. {{ number_format($history->item->price, 0, ',', '.') }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -234,7 +240,8 @@
         </div>
 
         <div class="income border-solid">
-            <p style="margin-block-start: .2em; margin-block-end: .2em">Total {{ $title }} : {{ $total }}</p>
+            <p style="margin-block-start: .2em; margin-block-end: .2em">Total {{ $title }} : {{ $total_qty }}</p>
+            <p style="margin-block-start: .2em; margin-block-end: .2em">Total Harga {{ $status }} : Rp. {{ number_format($total_price, 0, ',', '.') }}</p>
         </div>
 
     </div>

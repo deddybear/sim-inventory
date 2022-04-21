@@ -66,7 +66,7 @@ $(document).ready(function () {
             { data: "type.name", name: "type.name" },            
             { 
                 data: function (row) {
-                    if (row.qty == 0) {
+                    if (row.qty <= 5) {
                         if (validationQty[row.DT_RowIndex] == null) {
                             toastr.warning(`Stock ${row.name} Kosong mohon untuk me-restock ulang`)
                         }
@@ -243,9 +243,22 @@ $(document).ready(function () {
           })
     });
 
+    $("tbody").on("click", ".edit", function () {
+        console.log("a");
+        id = $(this).attr("data");
+        $("#form")[0].reset();
+        method = "PUT";
+        domModal('Mengedit Gudang Bahan Baku', 'Edit', 'Batalkan');
+        $('#qty-form').hide();
+        $('#qty').prop("disabled", true);
+        $('#modal_form').modal('show');
+    });
+
     //DOM add data func
     $('#add').click(function() {
         $("#form")[0].reset();
+        $('#qty-form').show();
+        $('#qty').prop("disabled", false);
         domModal('Menambahkan Gudang Bahan Baku', 'Tambah', 'Batalkan')
         method = "POST";
 
@@ -262,7 +275,7 @@ $(document).ready(function () {
         } else if (method == "PUT") {
             url = `/gudang/update/${id}`;
         }
-
+        
         $.ajax({
             url: url,
             method: method,
@@ -275,7 +288,6 @@ $(document).ready(function () {
                 $('#loader-wrapper').hide();
             },
             success: function (data) {
-         
                 if (data.success) {
                     Swal.fire("Sukses!", data.success, "success");
                     location.reload();

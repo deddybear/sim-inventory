@@ -4,15 +4,12 @@ use App\Http\Controllers\GudangController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JenisBahanBakuController;
-use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\RackController;
 use App\Http\Controllers\UnitsController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use App\Models\Item;
 
 /*
 |--------------------------------------------------------------------------

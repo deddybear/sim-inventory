@@ -23,4 +23,6 @@ class History extends Model
     public function item(){
        return $this->hasOne(Item::class, 'id', 'items_id');
     }
+
+    
 }

@@ -61,7 +61,7 @@ class HistoryController extends Controller {
         return $data;
     }
 
-    static public function create($items_id, $act, $desc, $qty) {      
+    static public function create($items_id, $act, $desc, $qty, $priceNow, $totalPrice) {      
         try {
             date_default_timezone_set('Asia/Jakarta');
 
@@ -71,6 +71,8 @@ class HistoryController extends Controller {
                 'act'  => $act,
                 'descr'  => $desc,
                 'qty'   => $qty,
+                'price' => $priceNow,
+                'total' => $totalPrice,
                 'created_at' => Date('Y-m-d H:i:s')
             );
 

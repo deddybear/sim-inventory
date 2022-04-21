@@ -24,7 +24,7 @@ $(document).ready(function () {
             { data: "type.name", name: "type.name" },            
             { 
                 data: function (row) {
-                    if (row.qty == 0) {
+                    if (row.qty <= 5) {
                         if (validationQty[row.DT_RowIndex] == null) {
                             toastr.warning(`Stock ${row.name} Kosong mohon untuk me-restock ulang`)
                         }

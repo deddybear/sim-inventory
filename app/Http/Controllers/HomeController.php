@@ -120,7 +120,7 @@ class HomeController extends Controller {
 
     public function alertStockSpv() {
         
-        $data = Item::select('name', 'qty')->where('qty', '<=', '0')->get();
+        $data = Item::select('name', 'qty')->where('qty', '<=', '5')->get();
         return $data;
         
     }
