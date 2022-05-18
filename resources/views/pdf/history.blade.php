@@ -241,7 +241,7 @@
 
         <div class="income border-solid">
             <p style="margin-block-start: .2em; margin-block-end: .2em">Total {{ $title }} : {{ $total_qty }}</p>
-            <p style="margin-block-start: .2em; margin-block-end: .2em">Total Harga {{ $status }} : Rp. {{ number_format($total_price, 0, ',', '.') }}</p>
+            <p style="margin-block-start: .2em; margin-block-end: .2em">Total {{ $status }} : Rp. {{ number_format($total_price, 0, ',', '.') }}</p>
         </div>
 
     </div>

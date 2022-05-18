@@ -32,7 +32,7 @@ class LaporanController extends Controller
                 'total_qty' => $totalQty,
                 'total_price' => $totalCost,
                 'title' => 'Bahan Baku Keluar',
-                'status' => 'Pemasukan'
+                'status' => 'Pengeluaran Harga Bahan Baku'
             );
 
       
@@ -58,7 +58,7 @@ class LaporanController extends Controller
                 'total_qty' => $totalQty,
                 'total_price' => $totalCost,
                 'title' => 'Bahan Baku Masuk',
-                'status' => 'Pembelian'
+                'status' => 'Pemasukan Harga Bahan Baku'
             );
 
     
@@ -73,11 +73,13 @@ class LaporanController extends Controller
                         ->orderBy('date_entry', 'asc')
                         ->get();
 
+            $qty = collect($items)->sum('qty');
             $totalExp = collect($items)->sum('total');
 
             $data = array(
                 'items'     => $items,
-                'total_exp' => $totalExp
+                'total_exp' => $totalExp,
+                'total_qty' => $qty
             );
 
             $pdf = PDF::loadView('pdf.items', $data)->setPaper('A4', 'potrait');

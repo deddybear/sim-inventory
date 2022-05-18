@@ -242,7 +242,8 @@
     </div>
 
     <div class="income border-solid">
-        <p style="margin-block-start: .2em; margin-block-end: .2em">Total Pembelian Bulan ini : Rp. {{ number_format($total_exp, 0, ',', '.') }}</p>
+        <p style="margin-block-start: .2em; margin-block-end: .2em">Total Kuantitas : {{ $total_qty }}</p>
+        <p style="margin-block-start: .2em; margin-block-end: .2em">Total Harga Pembelian : Rp. {{ number_format($total_exp, 0, ',', '.') }}</p>
     </div>
 </body>
 </html>
