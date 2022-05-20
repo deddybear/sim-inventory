@@ -49,7 +49,7 @@ $(document).ready(function() {
                 orderable: false,
                 searchable: false,
             },
-            { data: "id", name: "id" },
+            { data: "code", name: "code" },
             { data: "name", name: "name" },
             { data: "created_at", name: "created_at" },
             { data: "updated_at", name: "updated_at" },

@@ -71,7 +71,7 @@
                         <div class="form-group">
                             <label class="control-label col-md-5">Kode Jenis</label>
                             <div class="col-md-12">
-                                <input type="text" class="form-control" name="id" id="id"
+                                <input type="text" class="form-control" name="code" id="code"
                                     placeholder="Kode Jenis" required>
                             </div>
                         </div>

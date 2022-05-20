@@ -21,7 +21,12 @@ $(document).ready(function () {
             },
             { data: "item_code", name: "item_code" },
             { data: "name", name: "name" },
-            { data: "type.name", name: "type.name" },            
+            { 
+                data: function (row) {
+                    return `${row.type.code} - ${row.type.name}`
+                }, 
+                name: "type.name" 
+            },                 
             { 
                 data: function (row) {
                     if (row.qty <= 5) {

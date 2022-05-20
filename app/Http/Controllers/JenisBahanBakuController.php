@@ -51,7 +51,7 @@ class JenisBahanBakuController extends Controller {
         date_default_timezone_set('Asia/Jakarta');
 
         $data = array(
-            'id' => $req->id,
+            'code' => $req->code,
             'name' => $req->name,
         );
 
@@ -67,7 +67,7 @@ class JenisBahanBakuController extends Controller {
     public function update($id, ValidationJenis $req) {
         
         $data = array(
-            'id' => $req->id,
+            'code' => $req->code,
             'name' => $req->name,
         );
 

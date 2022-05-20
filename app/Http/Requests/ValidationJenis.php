@@ -24,22 +24,20 @@ class ValidationJenis extends FormRequest
     public function rules()
     {
         return [
-            'id'   => 'required|string|between:4,10|unique:types',
-            'name' => 'required|string|between:4,50|unique:types',
+            'code' => 'required|string|between:4,10',
+            'name' => 'required|string|between:4,50',
         ];
     }
 
     public function messages()
     {
         return [
-            'id.required' => 'Kode jenis harus wajib di-isi',
-            'id.string'   => 'Mohon di isi Kode Jenis dengan benar',
-            'id.between'  => 'Panjang Kode Jenis minimal 5, maksimal 50',
-            'id.unique'   => 'Kode Jenis Sudah Terdaftar',
+            'code.required' => 'Kode jenis harus wajib di-isi',
+            'code.string'   => 'Mohon di isi Kode Jenis dengan benar',
+            'code.between'  => 'Panjang Kode Jenis minimal 5, maksimal 50',
             'name.required' => 'Mohon di isi bagian Nama jenis',
             'name.string'   => 'Mohon di isi Nama Jenis dengan benar',
             'name.between'  => 'Panjang nama minimal 5, maksimal 50',
-            'name.unique'   => 'Nama Jenis Sudah Terdaftar'
         ];
     }
 
