@@ -25,7 +25,7 @@ class GudangController extends Controller {
     }
 
     public function data() {
-        $data = Item::with('type:id,code,name', 'unit:id,name', 'rack:id,name')->orderBy('date_entry', 'desc');
+        $data = Item::with('type:id,name', 'unit:id,name', 'rack:id,name')->orderBy('date_entry', 'desc');
         
         if (Auth::user()->roles == '2') {
             return DataTables::eloquent($data)
