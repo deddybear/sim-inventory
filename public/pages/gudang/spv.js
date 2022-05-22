@@ -22,9 +22,7 @@ $(document).ready(function () {
             { data: "item_code", name: "item_code" },
             { data: "name", name: "name" },
             { 
-                data: function (row) {
-                    return `${row.type.code} - ${row.type.name}`
-                }, 
+                data: "type.name", 
                 name: "type.name" 
             },                 
             { 
