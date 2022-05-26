@@ -5,7 +5,7 @@
 
 @section('script')
     {{-- <script src="{{ asset('/plugins/chartjs/chart.js') }}"></script> --}}
-    <script src="{{ asset('/pages/home/script.js') }}"></script>
+    {{-- <script src="{{ asset('/pages/home/script.js') }}"></script> --}}
     @if (Auth::user()->roles == '1')
     <script src="{{ asset('/pages/home/spv.js') }}"></script>
     @endif
