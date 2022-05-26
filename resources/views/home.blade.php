@@ -4,7 +4,7 @@
 @section('title-header', 'Dashboard')
 
 @section('script')
-    <script src="{{ asset('/plugins/chartjs/chart.js') }}"></script>
+    {{-- <script src="{{ asset('/plugins/chartjs/chart.js') }}"></script> --}}
     <script src="{{ asset('/pages/home/script.js') }}"></script>
     @if (Auth::user()->roles == '1')
     <script src="{{ asset('/pages/home/spv.js') }}"></script>
@@ -24,7 +24,7 @@
             <p class="text-center">Jl. Moh. Toha No.215, Citeureup, Kec. Dayeuhkolot, Kota Bandung, Jawa Barat 40258    </p>
         </div>
     </div>
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-lg-6 col-12">
             <div class="card shadow-lg">
                 <div class="card-header">Grafik Pemasukan Bahan Baku</div>
@@ -57,5 +57,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 @endsection
