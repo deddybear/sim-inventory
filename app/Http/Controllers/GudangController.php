@@ -17,7 +17,7 @@ class GudangController extends Controller {
     
 
     public function index() {
-        $listType = Type::select('id', 'name')->orderBy('created_at', 'desc')->get();
+        $listType = Type::select('id', 'name', 'code')->orderBy('created_at', 'desc')->get();
         $listUnit = Unit::select('id', 'name')->orderBy('created_at', 'desc')->get();
         $listRack = Rack::select('id', 'name')->orderBy('created_at', 'desc')->get();
 
@@ -25,7 +25,7 @@ class GudangController extends Controller {
     }
 
     public function data() {
-        $data = Item::with('type:id,name', 'unit:id,name', 'rack:id,name')->orderBy('date_entry', 'desc');
+        $data = Item::with('type:id,name,code', 'unit:id,name', 'rack:id,name')->orderBy('date_entry', 'desc');
         
         if (Auth::user()->roles == '2') {
             return DataTables::eloquent($data)
@@ -117,7 +117,7 @@ class GudangController extends Controller {
 
             return response()->json(['success' => 'Berhasil Menambahkan Data Bahan Baku']);
         } catch (\Throwable $th) {
-            return response()->json(['errors' => ['errors' => 'Internal Server Error']], 500);
+            return response()->json(['errors' => ['errors' => $th->errorInfo[2]]], 500);
         }
     }
 
@@ -140,7 +140,7 @@ class GudangController extends Controller {
             Item::where('id', $id)->update($data);
             return response()->json(['success' => 'Berhasil Update Data Bahan Baku']);
         } catch (\Throwable $th) {
-            return response()->json(['errors' => ['errors' => 'Internal Server Error']], 500);
+             return response()->json(['errors' => ['errors' => $th->errorInfo[2]]], 500);
         }
     }
 
@@ -168,7 +168,7 @@ class GudangController extends Controller {
 
             return response()->json(['success' => 'Berhasil Menambahkan Stock Bahan Baku']);
         } catch (\Throwable $th) {
-             return response()->json(['errors' => ['errors' => 'Internal Server Error']], 500);
+              return response()->json(['errors' => ['errors' => $th->errorInfo[2]]], 500);
         }
     }
 
@@ -197,7 +197,7 @@ class GudangController extends Controller {
             );
             return response()->json(['success' => 'Berhasil Mengurangi Stock Bahan Baku']);
         } catch (\Throwable $th) {
-             return response()->json(['errors' => ['errors' => 'Internal Server Error']], 500);
+            return response()->json(['errors' => ['errors' => $th->errorInfo[2]]], 500);
         }
     }
 

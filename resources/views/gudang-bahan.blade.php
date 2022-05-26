@@ -147,7 +147,7 @@
                                 <select id="list-type" class="form-control" name="type" required>
                                     <option value="" selected>Silahkan Dipilih</option>
                                     @foreach ($listType as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                        <option value="{{ $item->id }}">{{ $item->code }} | {{ $item->name }}</option>
                                     @endforeach
                                 </select>
                                 <div class="d-block"> 

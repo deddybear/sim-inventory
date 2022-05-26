@@ -69,7 +69,7 @@ class UserController extends Controller {
             User::create($data);
             return response()->json(['success' => 'Berhasil Menambahkan Data Karyawan']);
        } catch (\Throwable $th) {
-            return response()->json(['errors' => ['errors' => 'Internal Server Error']], 500);
+            return response()->json(['errors' => ['errors' => $th->errorInfo[2]]], 500);
        }
     }
 
@@ -86,7 +86,7 @@ class UserController extends Controller {
             User::where('id', $id)->update($data);
             return response()->json(['success' => 'Berhasil Update Data Karyawan']);
        } catch (\Throwable $th) {
-            return response()->json(['errors' => ['errors' => 'Internal Server Error']], 500);
+            return response()->json(['errors' => ['errors' => $th->errorInfo[2]]], 500);
        }
     }
 
@@ -95,7 +95,7 @@ class UserController extends Controller {
             User::where('id', $id)->delete();
             return response()->json(['success' => 'Berhasil Menghapus Data Karyawan']);
         } catch (\Throwable $th) {
-            return response()->json(['errors' => ['errors' => 'Internal Server Error']], 500);
+            return response()->json(['errors' => ['errors' => $th->errorInfo[2]]], 500);
         }
     }
 }

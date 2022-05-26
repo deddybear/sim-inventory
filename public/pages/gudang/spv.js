@@ -19,7 +19,7 @@ $(document).ready(function () {
                 orderable: false,
                 searchable: false,
             },
-            { data: "item_code", name: "item_code" },
+            { data: "type.code", name: "type.code" },
             { data: "name", name: "name" },
             { 
                 data: "type.name", 
